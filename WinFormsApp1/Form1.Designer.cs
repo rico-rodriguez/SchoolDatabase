@@ -45,8 +45,11 @@
             this.dtStudentDateOfBirth = new System.Windows.Forms.DateTimePicker();
             this.numTeacherId = new System.Windows.Forms.NumericUpDown();
             this.dgvResults = new System.Windows.Forms.DataGridView();
+            this.label8 = new System.Windows.Forms.Label();
+            this.numTeacherAge = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTeacherAge)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -204,11 +207,44 @@
             this.dgvResults.Size = new System.Drawing.Size(344, 177);
             this.dgvResults.TabIndex = 18;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(30, 142);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(31, 15);
+            this.label8.TabIndex = 19;
+            this.label8.Text = "Age:";
+            // 
+            // numTeacherAge
+            // 
+            this.numTeacherAge.Location = new System.Drawing.Point(107, 140);
+            this.numTeacherAge.Maximum = new decimal(new int[] {
+            -4836480,
+            4,
+            0,
+            0});
+            this.numTeacherAge.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numTeacherAge.Name = "numTeacherAge";
+            this.numTeacherAge.Size = new System.Drawing.Size(200, 23);
+            this.numTeacherAge.TabIndex = 20;
+            this.numTeacherAge.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1010, 242);
+            this.Controls.Add(this.numTeacherAge);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.dgvResults);
             this.Controls.Add(this.numTeacherId);
             this.Controls.Add(this.dtStudentDateOfBirth);
@@ -230,6 +266,7 @@
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTeacherAge)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -254,5 +291,7 @@
         private DateTimePicker dtStudentDateOfBirth;
         private NumericUpDown numTeacherId;
         private DataGridView dgvResults;
+        private Label label8;
+        private NumericUpDown numTeacherAge;
     }
 }

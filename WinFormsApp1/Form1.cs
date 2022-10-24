@@ -11,7 +11,7 @@ namespace WinFormsApp1
             dgvResults.DataSource = listTeachers;
         }
 
-         BindingList<Teacher> listTeachers = new BindingList<Teacher>();
+        BindingList<Teacher> listTeachers = new BindingList<Teacher>();
 
         private void btnAddTeacher_Click(object sender, EventArgs e)
         {
@@ -19,7 +19,9 @@ namespace WinFormsApp1
             teacher1.Id = Convert.ToInt32(Math.Round(numTeacherId.Value));
             teacher1.FirstName = txtTeacherFirstName.Text;
             teacher1.LastName = txtTeacherLastName.Text;
+            teacher1.Age = Convert.ToInt32(Math.Round(numTeacherAge.Value));
 
+            bool validId = true;
             //Does list contain id?
             foreach (var item in listTeachers)
             {
@@ -27,18 +29,23 @@ namespace WinFormsApp1
                 {
                     //If so, msgbox "MUST BE UNIQUE ID"
                     MessageBox.Show("This ID already exists.");
-
-                } else
+                    validId = false;
+                }
+                if (item.FirstName == teacher1.FirstName && item.LastName == teacher1.LastName && item.Age == teacher1.Age)
                 {
-
+                    MessageBox.Show("This user already exists.");
+                    validId = false;
                 }
             }
             //If not, continue
+            if (validId)
+            {
+                listTeachers.Add(teacher1);
+                dgvResults.Refresh();
+            }
 
-            listTeachers.Add(teacher1);
-            dgvResults.Refresh();
 
-            MessageBox.Show(teacher1.ToString());
+            //MessageBox.Show(teacher1.ToString());
             //MessageBox.Show($"First Name: { teacher1.FirstName }, Last Name: {txtTeacherLastName.Text}, ID: {teacher1.Id} ");
         }
     }
