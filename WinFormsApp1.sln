@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolOfFineArts", "WinForm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolOfFineArtsModels", "SchoolOfFineArtsModels\SchoolOfFineArtsModels.csproj", "{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolOfFineArtsDB", "SchoolOfFineArtsDB\SchoolOfFineArtsDB.csproj", "{9ED2EDC5-82CE-497F-8752-DAF3A300BFFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ED2EDC5-82CE-497F-8752-DAF3A300BFFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ED2EDC5-82CE-497F-8752-DAF3A300BFFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ED2EDC5-82CE-497F-8752-DAF3A300BFFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ED2EDC5-82CE-497F-8752-DAF3A300BFFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

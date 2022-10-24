@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using SchoolOfFineArtsModels;
 using System.ComponentModel;
 
@@ -10,11 +11,13 @@ namespace WinFormsApp1
             InitializeComponent();
             dgvResults.DataSource = listTeachers;
         }
-
         BindingList<Teacher> listTeachers = new BindingList<Teacher>();
 
         private void btnAddTeacher_Click(object sender, EventArgs e)
         {
+            var data = Program._configuration["ConnectionStrings:SchoolOfFineArtsDB"];
+            MessageBox.Show(data);
+
             var teacher1 = new Teacher();
             teacher1.Id = Convert.ToInt32(Math.Round(numTeacherId.Value));
             teacher1.FirstName = txtTeacherFirstName.Text;

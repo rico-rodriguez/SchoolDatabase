@@ -201,7 +201,7 @@
             // dgvResults
             // 
             this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvResults.Location = new System.Drawing.Point(635, 23);
+            this.dgvResults.Location = new System.Drawing.Point(156, 238);
             this.dgvResults.Name = "dgvResults";
             this.dgvResults.RowTemplate.Height = 25;
             this.dgvResults.Size = new System.Drawing.Size(344, 177);
@@ -242,7 +242,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1010, 242);
+            this.ClientSize = new System.Drawing.Size(650, 445);
             this.Controls.Add(this.numTeacherAge);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.dgvResults);
