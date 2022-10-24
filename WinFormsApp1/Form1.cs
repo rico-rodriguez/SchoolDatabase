@@ -21,6 +21,7 @@ namespace WinFormsApp1
             teacher1.LastName = txtTeacherLastName.Text;
             teacher1.Age = Convert.ToInt32(Math.Round(numTeacherAge.Value));
 
+
             bool validId = true;
             //Does list contain id?
             foreach (var item in listTeachers)
@@ -31,7 +32,9 @@ namespace WinFormsApp1
                     MessageBox.Show("This ID already exists.");
                     validId = false;
                 }
-                if (item.FirstName == teacher1.FirstName && item.LastName == teacher1.LastName && item.Age == teacher1.Age)
+                if (item.FirstName.Equals(teacher1.FirstName,StringComparison.OrdinalIgnoreCase) 
+                            && item.LastName.Equals(teacher1.LastName,StringComparison.OrdinalIgnoreCase)
+                            && item.Age == teacher1.Age)
                 {
                     MessageBox.Show("This user already exists.");
                     validId = false;

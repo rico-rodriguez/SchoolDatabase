@@ -9,6 +9,7 @@
         public int Age { get; set; }
 
 
+        //override equals to take in an object and compare to teacher
 
         public override string ToString()
         {
