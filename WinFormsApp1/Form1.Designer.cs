@@ -54,7 +54,6 @@
             this.label1.Size = new System.Drawing.Size(63, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Teacher Id:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -82,7 +81,6 @@
             this.label4.Size = new System.Drawing.Size(66, 15);
             this.label4.TabIndex = 5;
             this.label4.Text = "Last Name:";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label5
             // 
@@ -183,7 +181,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 450);
+            this.ClientSize = new System.Drawing.Size(898, 450);
             this.Controls.Add(this.dtStudentDateOfBirth);
             this.Controls.Add(this.btnAddStudent);
             this.Controls.Add(this.btnAddTeacher);
