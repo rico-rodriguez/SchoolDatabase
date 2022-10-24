@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolOfFineArts", "WinFormsApp1\SchoolOfFineArts.csproj", "{7E6D40B8-A0C6-4056-A0F5-0B94035C7293}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolOfFineArtsModels", "SchoolOfFineArtsModels\SchoolOfFineArtsModels.csproj", "{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E6D40B8-A0C6-4056-A0F5-0B94035C7293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E6D40B8-A0C6-4056-A0F5-0B94035C7293}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E6D40B8-A0C6-4056-A0F5-0B94035C7293}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E6D40B8-A0C6-4056-A0F5-0B94035C7293}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BEEE28B2-C215-48A2-9276-4F78F51DB69A}
+	EndGlobalSection
+EndGlobal
