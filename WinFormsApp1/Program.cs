@@ -21,5 +21,6 @@ namespace WinFormsApp1
             _configuration = builder.Build();
             Application.Run(new Form1());
         }
+        
     }
 }
