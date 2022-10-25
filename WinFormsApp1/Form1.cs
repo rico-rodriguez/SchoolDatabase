@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using SchoolOfFineArtsDB;
 using SchoolOfFineArtsModels;
 using System.ComponentModel;
@@ -22,83 +21,93 @@ namespace WinFormsApp1
 
         private void btnAddTeacher_Click(object sender, EventArgs e)
         {
-            var data = Program._configuration["ConnectionStrings:SchoolOfFineArtsDB"];
-            MessageBox.Show(data);
-
-            var teacher1 = new Teacher();
-            teacher1.Id = Convert.ToInt32(Math.Round(numTeacherId.Value));
-            teacher1.FirstName = txtTeacherFirstName.Text;
-            teacher1.LastName = txtTeacherLastName.Text;
-            teacher1.Age = Convert.ToInt32(Math.Round(numAge.Value));
-
-
-            bool validId = true;
-            //Does list contain id?
-            foreach (var item in listTeachers)
+            bool newObject = true;
+            if (rdoTeacher.Checked)
             {
-                if (item.Id == teacher1.Id)
+                var teacher = new Teacher();
+                teacher.Id = 0;
+                teacher.FirstName = txtTeacherFirstName.Text;
+                teacher.LastName = txtTeacherLastName.Text;
+                teacher.Age = Convert.ToInt32(Math.Round(numAge.Value));
+
+
+                //Ensure teacher not in database
+
+                using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
                 {
-                    //If so, msgbox "MUST BE UNIQUE ID"
-                    MessageBox.Show("This ID already exists.");
-                    validId = false;
+                    var exists = context.Teachers.SingleOrDefault(t => t.FirstName.ToLower() == teacher.FirstName.ToLower()
+                                                                  && t.LastName.ToLower() == teacher.LastName.ToLower()
+                                                                  && t.Age == teacher.Age);
+
+                    //If exists, post error
+                    if (exists is not null)
+                    {
+                        newObject = false;
+                        MessageBox.Show("Teacher already exists, did you mean to update?");
+                    }
+                    else
+                    {
+                        context.Teachers.Add(teacher);
+                        context.SaveChanges();
+                        //Reload teachers
+                        var dbTeachers = new BindingList<Teacher>(context.Teachers.ToList());
+                        dgvResults.DataSource = dbTeachers;
+                        dgvResults.Refresh();
+                    }
+
                 }
-                if (item.FirstName.Equals(teacher1.FirstName,StringComparison.OrdinalIgnoreCase) 
-                            && item.LastName.Equals(teacher1.LastName,StringComparison.OrdinalIgnoreCase)
-                            && item.Age == teacher1.Age)
+
+
+                //If not, add teacher
+
+
+            }
+            else if (rdoStudent.Checked)
+            {
+
+            }
+        }
+            private void btnLoadTeachers_Click_1(object sender, EventArgs e)
+            {
+                using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
                 {
-                    MessageBox.Show("This user already exists.");
-                    validId = false;
+                    var dbTeachers = new BindingList<Teacher>(context.Teachers.ToList());
+                    dgvResults.DataSource = dbTeachers;
+                    dgvResults.Refresh();
                 }
             }
-            //If not, continue
-            if (validId)
+
+            private void radioButton1_CheckedChanged(object sender, EventArgs e)
             {
-                listTeachers.Add(teacher1);
-                dgvResults.Refresh();
+                toggleControlVisibility();
             }
-        }
 
-        private void btnLoadTeachers_Click_1(object sender, EventArgs e)
-        {
-            using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+            private void toggleControlVisibility()
             {
-                var dbTeachers = new BindingList<Teacher>(context.Teachers.ToList());
-                dgvResults.DataSource = dbTeachers;
-                dgvResults.Refresh();
+                lblAge.Visible = rdoTeacher.Checked;
+                lblDateOfBirth.Visible = rdoStudent.Checked;
+                numAge.Visible = rdoTeacher.Checked;
+                dtStudentDateOfBirth.Visible = rdoStudent.Checked;
             }
-        }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            toggleControlVisibility();
-        }
-
-        private void toggleControlVisibility()
-        {
-            lblAge.Visible = rdoTeacher.Checked;
-            lblDateOfBirth.Visible = rdoStudent.Checked;
-            numAge.Visible = rdoTeacher.Checked;
-            dtStudentDateOfBirth.Visible = rdoStudent.Checked;
-        }
-
-        private void rdoStudent_CheckedChanged(object sender, EventArgs e)
-        {
-            toggleControlVisibility();
-        }
-
-        private void btnAddStudent_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnLoadStudents_Click(object sender, EventArgs e)
-        {
-            using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+            private void rdoStudent_CheckedChanged(object sender, EventArgs e)
             {
-                var dbStudents = new BindingList<Student>(context.Students.ToList());
-                dgvResults.DataSource = dbStudents;
-                dgvResults.Refresh();
+                toggleControlVisibility();
+            }
+
+            private void btnAddStudent_Click(object sender, EventArgs e)
+            {
+
+            }
+
+            private void btnLoadStudents_Click(object sender, EventArgs e)
+            {
+                using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+                {
+                    var dbStudents = new BindingList<Student>(context.Students.ToList());
+                    dgvResults.DataSource = dbStudents;
+                    dgvResults.Refresh();
+                }
             }
         }
     }
-}

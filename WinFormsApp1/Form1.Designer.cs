@@ -104,7 +104,7 @@
             // 
             // btnAddTeacher
             // 
-            this.btnAddTeacher.Location = new System.Drawing.Point(14, 209);
+            this.btnAddTeacher.Location = new System.Drawing.Point(341, 11);
             this.btnAddTeacher.Name = "btnAddTeacher";
             this.btnAddTeacher.Size = new System.Drawing.Size(127, 23);
             this.btnAddTeacher.TabIndex = 14;
@@ -145,10 +145,10 @@
             // dgvResults
             // 
             this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvResults.Location = new System.Drawing.Point(300, 15);
+            this.dgvResults.Location = new System.Drawing.Point(90, 232);
             this.dgvResults.Name = "dgvResults";
             this.dgvResults.RowTemplate.Height = 25;
-            this.dgvResults.Size = new System.Drawing.Size(344, 177);
+            this.dgvResults.Size = new System.Drawing.Size(531, 177);
             this.dgvResults.TabIndex = 18;
             // 
             // lblAge
@@ -184,7 +184,7 @@
             // 
             // btnLoadTeachers
             // 
-            this.btnLoadTeachers.Location = new System.Drawing.Point(167, 209);
+            this.btnLoadTeachers.Location = new System.Drawing.Point(494, 11);
             this.btnLoadTeachers.Name = "btnLoadTeachers";
             this.btnLoadTeachers.Size = new System.Drawing.Size(127, 23);
             this.btnLoadTeachers.TabIndex = 21;
@@ -227,7 +227,7 @@
             // 
             // btnLoadStudents
             // 
-            this.btnLoadStudents.Location = new System.Drawing.Point(167, 238);
+            this.btnLoadStudents.Location = new System.Drawing.Point(494, 40);
             this.btnLoadStudents.Name = "btnLoadStudents";
             this.btnLoadStudents.Size = new System.Drawing.Size(127, 23);
             this.btnLoadStudents.TabIndex = 25;
