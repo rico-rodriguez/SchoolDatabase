@@ -29,7 +29,7 @@ namespace WinFormsApp1
             teacher1.Id = Convert.ToInt32(Math.Round(numTeacherId.Value));
             teacher1.FirstName = txtTeacherFirstName.Text;
             teacher1.LastName = txtTeacherLastName.Text;
-            teacher1.Age = Convert.ToInt32(Math.Round(numTeacherAge.Value));
+            teacher1.Age = Convert.ToInt32(Math.Round(numAge.Value));
 
 
             bool validId = true;
@@ -56,10 +56,6 @@ namespace WinFormsApp1
                 listTeachers.Add(teacher1);
                 dgvResults.Refresh();
             }
-
-
-            //MessageBox.Show(teacher1.ToString());
-            //MessageBox.Show($"First Name: { teacher1.FirstName }, Last Name: {txtTeacherLastName.Text}, ID: {teacher1.Id} ");
         }
 
         private void btnLoadTeachers_Click_1(object sender, EventArgs e)
@@ -68,6 +64,39 @@ namespace WinFormsApp1
             {
                 var dbTeachers = new BindingList<Teacher>(context.Teachers.ToList());
                 dgvResults.DataSource = dbTeachers;
+                dgvResults.Refresh();
+            }
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            toggleControlVisibility();
+        }
+
+        private void toggleControlVisibility()
+        {
+            lblAge.Visible = rdoTeacher.Checked;
+            lblDateOfBirth.Visible = rdoStudent.Checked;
+            numAge.Visible = rdoTeacher.Checked;
+            dtStudentDateOfBirth.Visible = rdoStudent.Checked;
+        }
+
+        private void rdoStudent_CheckedChanged(object sender, EventArgs e)
+        {
+            toggleControlVisibility();
+        }
+
+        private void btnAddStudent_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnLoadStudents_Click(object sender, EventArgs e)
+        {
+            using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+            {
+                var dbStudents = new BindingList<Student>(context.Students.ToList());
+                dgvResults.DataSource = dbStudents;
                 dgvResults.Refresh();
             }
         }
