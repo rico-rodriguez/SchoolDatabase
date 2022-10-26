@@ -47,6 +47,7 @@
             this.btnLoadStudents = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnResetForm = new System.Windows.Forms.Button();
+            this.btnSearch = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAge)).BeginInit();
@@ -142,7 +143,7 @@
             // dgvResults
             // 
             this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvResults.Location = new System.Drawing.Point(4, 181);
+            this.dgvResults.Location = new System.Drawing.Point(3, 210);
             this.dgvResults.Name = "dgvResults";
             this.dgvResults.RowTemplate.Height = 25;
             this.dgvResults.Size = new System.Drawing.Size(465, 176);
@@ -178,12 +179,13 @@
             // 
             // btnLoadTeachers
             // 
-            this.btnLoadTeachers.Location = new System.Drawing.Point(84, 363);
+            this.btnLoadTeachers.Location = new System.Drawing.Point(457, 363);
             this.btnLoadTeachers.Name = "btnLoadTeachers";
-            this.btnLoadTeachers.Size = new System.Drawing.Size(127, 23);
+            this.btnLoadTeachers.Size = new System.Drawing.Size(98, 23);
             this.btnLoadTeachers.TabIndex = 21;
             this.btnLoadTeachers.Text = "Load Teachers";
             this.btnLoadTeachers.UseVisualStyleBackColor = true;
+            this.btnLoadTeachers.Visible = false;
             this.btnLoadTeachers.Click += new System.EventHandler(this.btnLoadTeachers_Click_1);
             // 
             // rdoTeacher
@@ -224,12 +226,13 @@
             // btnLoadStudents
             // 
             this.btnLoadStudents.BackColor = System.Drawing.Color.Transparent;
-            this.btnLoadStudents.Location = new System.Drawing.Point(226, 363);
+            this.btnLoadStudents.Location = new System.Drawing.Point(457, 363);
             this.btnLoadStudents.Name = "btnLoadStudents";
-            this.btnLoadStudents.Size = new System.Drawing.Size(127, 23);
+            this.btnLoadStudents.Size = new System.Drawing.Size(98, 23);
             this.btnLoadStudents.TabIndex = 25;
             this.btnLoadStudents.Text = "Load Students";
             this.btnLoadStudents.UseVisualStyleBackColor = false;
+            this.btnLoadStudents.Visible = false;
             this.btnLoadStudents.Click += new System.EventHandler(this.btnLoadStudents_Click);
             // 
             // btnDelete
@@ -252,12 +255,23 @@
             this.btnResetForm.UseVisualStyleBackColor = true;
             this.btnResetForm.Click += new System.EventHandler(this.btnResetForm_Click);
             // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(324, 181);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(127, 23);
+            this.btnSearch.TabIndex = 28;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(471, 391);
+            this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btnResetForm);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnLoadStudents);
@@ -279,6 +293,7 @@
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "Form1";
             this.Text = "School Database";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAge)).EndInit();
@@ -310,5 +325,6 @@
         private Button btnLoadStudents;
         private Button btnDelete;
         private Button btnResetForm;
+        private Button btnSearch;
     }
 }

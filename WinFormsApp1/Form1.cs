@@ -140,6 +140,11 @@ namespace WinFormsApp1
         }
         private void btnLoadTeachers_Click_1(object sender, EventArgs e)
         {
+            LoadTeachers();
+        }
+
+        private void LoadTeachers()
+        {
             using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
             {
                 var dbTeachers = new BindingList<Teacher>(context.Teachers.ToList());
@@ -151,6 +156,11 @@ namespace WinFormsApp1
         }
 
         private void btnLoadStudents_Click(object sender, EventArgs e)
+        {
+            LoadStudents();
+        }
+
+        private void LoadStudents()
         {
             using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
             {
@@ -165,6 +175,12 @@ namespace WinFormsApp1
         private void rdoTeacher_CheckedChanged(object sender, EventArgs e)
         {
             ToggleControlVisibility();
+            if (rdoTeacher.Checked)
+            {
+                LoadTeachers();
+                ResetForm();
+
+            }
         }
 
         private void ToggleControlVisibility()
@@ -178,6 +194,12 @@ namespace WinFormsApp1
         private void rdoStudent_CheckedChanged(object sender, EventArgs e)
         {
             ToggleControlVisibility();
+            if (rdoStudent.Checked)
+            {
+                LoadStudents();
+                ResetForm();
+
+            }
         }
 
         private void dgvResults_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -308,6 +330,35 @@ namespace WinFormsApp1
             numAge.Value = Convert.ToInt32(0);
             dtStudentDateOfBirth.Value = new DateTime(1900, 1, 1);
             dgvResults.ClearSelection();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            LoadTeachers();
+            ResetForm();
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+
+            if (rdoTeacher.Checked)
+            {
+                LoadTeachers();
+                var tList = dgvResults.DataSource as BindingList<Teacher>;
+                var fList = tList.Where(x => x.LastName.ToLower().Contains(txtTeacherLastName.Text.ToLower()) &&
+                                        x.FirstName.ToLower().Contains(txtTeacherFirstName.Text.ToLower())).ToList();
+                dgvResults.DataSource = new BindingList<Teacher>(fList);
+                dgvResults.ClearSelection();
+            }
+            if (rdoStudent.Checked)
+            {
+                LoadStudents();
+                var sList = dgvResults.DataSource as BindingList<Student>;
+                var fList = sList.Where(x => x.LastName.ToLower().Contains(txtTeacherLastName.Text.ToLower()) &&
+                                        x.FirstName.ToLower().Contains(txtTeacherFirstName.Text.ToLower())).ToList();
+                dgvResults.DataSource = new BindingList<Student>(fList);
+                dgvResults.ClearSelection();
+            }
         }
     }
 }
