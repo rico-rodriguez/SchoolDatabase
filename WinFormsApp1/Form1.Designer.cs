@@ -46,6 +46,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnLoadStudents = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.btnResetForm = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAge)).BeginInit();
@@ -55,7 +56,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(68, 28);
+            this.label1.Location = new System.Drawing.Point(79, 40);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(20, 15);
             this.label1.TabIndex = 0;
@@ -64,7 +65,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(26, 63);
+            this.label2.Location = new System.Drawing.Point(32, 76);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 15);
             this.label2.TabIndex = 1;
@@ -73,7 +74,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 102);
+            this.label3.Location = new System.Drawing.Point(33, 113);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(66, 15);
             this.label3.TabIndex = 2;
@@ -82,7 +83,7 @@
             // lblDateOfBirth
             // 
             this.lblDateOfBirth.AutoSize = true;
-            this.lblDateOfBirth.Location = new System.Drawing.Point(17, 138);
+            this.lblDateOfBirth.Location = new System.Drawing.Point(23, 151);
             this.lblDateOfBirth.Name = "lblDateOfBirth";
             this.lblDateOfBirth.Size = new System.Drawing.Size(76, 15);
             this.lblDateOfBirth.TabIndex = 6;
@@ -91,21 +92,21 @@
             // 
             // txtTeacherFirstName
             // 
-            this.txtTeacherFirstName.Location = new System.Drawing.Point(99, 60);
+            this.txtTeacherFirstName.Location = new System.Drawing.Point(105, 73);
             this.txtTeacherFirstName.Name = "txtTeacherFirstName";
             this.txtTeacherFirstName.Size = new System.Drawing.Size(200, 23);
             this.txtTeacherFirstName.TabIndex = 8;
             // 
             // txtTeacherLastName
             // 
-            this.txtTeacherLastName.Location = new System.Drawing.Point(99, 99);
+            this.txtTeacherLastName.Location = new System.Drawing.Point(105, 110);
             this.txtTeacherLastName.Name = "txtTeacherLastName";
             this.txtTeacherLastName.Size = new System.Drawing.Size(200, 23);
             this.txtTeacherLastName.TabIndex = 9;
             // 
             // btnAddTeacher
             // 
-            this.btnAddTeacher.Location = new System.Drawing.Point(324, 60);
+            this.btnAddTeacher.Location = new System.Drawing.Point(324, 73);
             this.btnAddTeacher.Name = "btnAddTeacher";
             this.btnAddTeacher.Size = new System.Drawing.Size(127, 23);
             this.btnAddTeacher.TabIndex = 14;
@@ -115,7 +116,7 @@
             // 
             // dtStudentDateOfBirth
             // 
-            this.dtStudentDateOfBirth.Location = new System.Drawing.Point(101, 134);
+            this.dtStudentDateOfBirth.Location = new System.Drawing.Point(107, 147);
             this.dtStudentDateOfBirth.Name = "dtStudentDateOfBirth";
             this.dtStudentDateOfBirth.Size = new System.Drawing.Size(200, 23);
             this.dtStudentDateOfBirth.TabIndex = 16;
@@ -126,7 +127,7 @@
             this.numTeacherId.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.numTeacherId.Cursor = System.Windows.Forms.Cursors.No;
             this.numTeacherId.Enabled = false;
-            this.numTeacherId.Location = new System.Drawing.Point(99, 26);
+            this.numTeacherId.Location = new System.Drawing.Point(105, 38);
             this.numTeacherId.Maximum = new decimal(new int[] {
             -4836480,
             4,
@@ -150,7 +151,7 @@
             // lblAge
             // 
             this.lblAge.AutoSize = true;
-            this.lblAge.Location = new System.Drawing.Point(62, 138);
+            this.lblAge.Location = new System.Drawing.Point(68, 151);
             this.lblAge.Name = "lblAge";
             this.lblAge.Size = new System.Drawing.Size(31, 15);
             this.lblAge.TabIndex = 19;
@@ -158,7 +159,7 @@
             // 
             // numAge
             // 
-            this.numAge.Location = new System.Drawing.Point(101, 138);
+            this.numAge.Location = new System.Drawing.Point(107, 147);
             this.numAge.Maximum = new decimal(new int[] {
             -4836480,
             4,
@@ -180,7 +181,7 @@
             // 
             // btnLoadTeachers
             // 
-            this.btnLoadTeachers.Location = new System.Drawing.Point(324, 118);
+            this.btnLoadTeachers.Location = new System.Drawing.Point(84, 363);
             this.btnLoadTeachers.Name = "btnLoadTeachers";
             this.btnLoadTeachers.Size = new System.Drawing.Size(127, 23);
             this.btnLoadTeachers.TabIndex = 21;
@@ -193,7 +194,7 @@
             this.rdoTeacher.AutoSize = true;
             this.rdoTeacher.Checked = true;
             this.rdoTeacher.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.rdoTeacher.Location = new System.Drawing.Point(32, 0);
+            this.rdoTeacher.Location = new System.Drawing.Point(28, 12);
             this.rdoTeacher.Name = "rdoTeacher";
             this.rdoTeacher.Size = new System.Drawing.Size(64, 17);
             this.rdoTeacher.TabIndex = 22;
@@ -206,7 +207,7 @@
             // 
             this.rdoStudent.AutoSize = true;
             this.rdoStudent.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.rdoStudent.Location = new System.Drawing.Point(32, 26);
+            this.rdoStudent.Location = new System.Drawing.Point(28, 35);
             this.rdoStudent.Name = "rdoStudent";
             this.rdoStudent.Size = new System.Drawing.Size(66, 17);
             this.rdoStudent.TabIndex = 23;
@@ -218,14 +219,14 @@
             // 
             this.panel1.Controls.Add(this.rdoStudent);
             this.panel1.Controls.Add(this.rdoTeacher);
-            this.panel1.Location = new System.Drawing.Point(324, 6);
+            this.panel1.Location = new System.Drawing.Point(324, 5);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(127, 43);
+            this.panel1.Size = new System.Drawing.Size(127, 62);
             this.panel1.TabIndex = 24;
             // 
             // btnLoadStudents
             // 
-            this.btnLoadStudents.Location = new System.Drawing.Point(324, 147);
+            this.btnLoadStudents.Location = new System.Drawing.Point(226, 363);
             this.btnLoadStudents.Name = "btnLoadStudents";
             this.btnLoadStudents.Size = new System.Drawing.Size(127, 23);
             this.btnLoadStudents.TabIndex = 25;
@@ -235,7 +236,7 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(324, 89);
+            this.btnDelete.Location = new System.Drawing.Point(324, 110);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(127, 23);
             this.btnDelete.TabIndex = 26;
@@ -243,11 +244,22 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // btnResetForm
+            // 
+            this.btnResetForm.Location = new System.Drawing.Point(324, 145);
+            this.btnResetForm.Name = "btnResetForm";
+            this.btnResetForm.Size = new System.Drawing.Size(127, 23);
+            this.btnResetForm.TabIndex = 27;
+            this.btnResetForm.Text = "Reset Form";
+            this.btnResetForm.UseVisualStyleBackColor = true;
+            this.btnResetForm.Click += new System.EventHandler(this.btnResetForm_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(471, 391);
+            this.Controls.Add(this.btnResetForm);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnLoadStudents);
             this.Controls.Add(this.panel1);
@@ -296,5 +308,6 @@
         private Panel panel1;
         private Button btnLoadStudents;
         private Button btnDelete;
+        private Button btnResetForm;
     }
 }
