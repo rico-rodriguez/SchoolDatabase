@@ -117,6 +117,7 @@
             // dtStudentDateOfBirth
             // 
             this.dtStudentDateOfBirth.Location = new System.Drawing.Point(107, 147);
+            this.dtStudentDateOfBirth.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
             this.dtStudentDateOfBirth.Name = "dtStudentDateOfBirth";
             this.dtStudentDateOfBirth.Size = new System.Drawing.Size(200, 23);
             this.dtStudentDateOfBirth.TabIndex = 16;
@@ -159,19 +160,15 @@
             // 
             // numAge
             // 
+            this.numAge.Cursor = System.Windows.Forms.Cursors.Hand;
             this.numAge.Location = new System.Drawing.Point(107, 147);
             this.numAge.Maximum = new decimal(new int[] {
             -4836480,
             4,
             0,
             0});
-            this.numAge.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.numAge.Name = "numAge";
-            this.numAge.Size = new System.Drawing.Size(202, 23);
+            this.numAge.Size = new System.Drawing.Size(35, 23);
             this.numAge.TabIndex = 20;
             this.numAge.Value = new decimal(new int[] {
             1,
@@ -226,12 +223,13 @@
             // 
             // btnLoadStudents
             // 
+            this.btnLoadStudents.BackColor = System.Drawing.Color.Transparent;
             this.btnLoadStudents.Location = new System.Drawing.Point(226, 363);
             this.btnLoadStudents.Name = "btnLoadStudents";
             this.btnLoadStudents.Size = new System.Drawing.Size(127, 23);
             this.btnLoadStudents.TabIndex = 25;
             this.btnLoadStudents.Text = "Load Students";
-            this.btnLoadStudents.UseVisualStyleBackColor = true;
+            this.btnLoadStudents.UseVisualStyleBackColor = false;
             this.btnLoadStudents.Click += new System.EventHandler(this.btnLoadStudents_Click);
             // 
             // btnDelete
@@ -258,6 +256,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(471, 391);
             this.Controls.Add(this.btnResetForm);
             this.Controls.Add(this.btnDelete);
@@ -276,8 +275,10 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ForeColor = System.Drawing.Color.Black;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "School Database";
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAge)).EndInit();

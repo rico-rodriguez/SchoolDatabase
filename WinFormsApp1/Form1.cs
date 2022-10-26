@@ -83,34 +83,58 @@ namespace WinFormsApp1
             else if (rdoStudent.Checked)
             {
                 var student = new Student();
+                //student.Id = 0;
                 student.Id = Convert.ToInt32(Math.Round(numTeacherId.Value));
                 student.FirstName = txtTeacherFirstName.Text;
                 student.LastName = txtTeacherLastName.Text;
-                student.DateOfBirth = dtStudentDateOfBirth.Value;
+                student.DateOfBirth = dtStudentDateOfBirth.Value.Date;
 
-                //Ensure student not in database
+                //Ensure teacher not in database
+
                 using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
                 {
-                    var exists = context.Students.SingleOrDefault(t => t.FirstName.ToLower() == student.FirstName.ToLower()
-                                                                  && t.LastName.ToLower() == student.LastName.ToLower()
-                                                                  && t.DateOfBirth == student.DateOfBirth);
-
-                    //If exists, post error
-                    if (exists is not null)
+                    if (student.Id > 0)
                     {
-                        MessageBox.Show("Student already exists, did you mean to update?");
+                        var existingStudent = context.Students.SingleOrDefault(t => t.Id == student.Id);
+
+                        if (existingStudent is not null)
+                        {
+                            existingStudent.FirstName = student.FirstName;
+                            existingStudent.LastName = student.LastName;
+                            existingStudent.DateOfBirth = student.DateOfBirth;
+                            context.SaveChanges();
+                            modified = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Teacher not found. Could not update.");
+                        }
+
                     }
                     else
                     {
-
-                        context.Students.Add(student);
-                        context.SaveChanges();
-                        //Reload students
+                        var existingStudent = context.Students.SingleOrDefault(t => t.FirstName.ToLower() == student.FirstName.ToLower()
+                                                                  && t.LastName.ToLower() == student.LastName.ToLower()
+                                                                  && t.DateOfBirth == student.DateOfBirth);
+                        if (existingStudent == null)
+                        {
+                            context.Students.Add(student);
+                            context.SaveChanges();
+                            modified = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Teacher already exists, did you mean to update?");
+                        }
+                    }
+                    if (modified)
+                    {
+                        //Reload teachers
+                        ResetForm();
                         var dbStudents = new BindingList<Student>(context.Students.ToList());
                         dgvResults.DataSource = dbStudents;
                         dgvResults.Refresh();
                     }
-
                 }
             }
         }
@@ -281,8 +305,8 @@ namespace WinFormsApp1
             numTeacherId.Value = 0;
             txtTeacherFirstName.Text = string.Empty;
             txtTeacherLastName.Text = string.Empty;
-            numAge.Value = Convert.ToInt32(1);
-            dtStudentDateOfBirth.Value = new DateTime(1984, 1, 1);
+            numAge.Value = Convert.ToInt32(0);
+            dtStudentDateOfBirth.Value = new DateTime(1900, 1, 1);
             dgvResults.ClearSelection();
         }
     }
