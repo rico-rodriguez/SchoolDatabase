@@ -162,11 +162,19 @@ namespace WinFormsApp1
             int dataId = 0;
             bool isTeacher = false;
             bool isStudent = false;
+
             foreach (DataGridViewTextBoxCell cell in theRow.Cells)
             {
+
                 if (cell.OwningColumn.Name.Equals("Id", StringComparison.OrdinalIgnoreCase))
                 {
                     dataId = (int)cell.Value;
+                    if (dataId == 0)
+                    {
+                        MessageBox.Show("Bad row clicked");
+                        ResetForm();
+                        return;
+                    }
                 }
                 if (cell.OwningColumn.Name.Equals("Age", StringComparison.OrdinalIgnoreCase))
                 {
@@ -177,7 +185,6 @@ namespace WinFormsApp1
                     isStudent = true;
                 }
             }
-
             using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
             {
                 if (isTeacher)
@@ -238,6 +245,10 @@ namespace WinFormsApp1
                         var databaseTeachers = new BindingList<Teacher>(context.Teachers.ToList());
                         dgvResults.DataSource = databaseTeachers;
                     }
+                    else
+                    {
+                        MessageBox.Show("Student not found, couldnt delete.");
+                    }
                 }
 
                 else if (rdoStudent.Checked)
@@ -250,15 +261,19 @@ namespace WinFormsApp1
                         var databaseStudents = new BindingList<Student>(context.Students.ToList());
                         dgvResults.DataSource = databaseStudents;
                     }
+                    else
+                    {
+                        MessageBox.Show("Student not found, couldnt delete.");
+                    }
                 }
                 dgvResults.Refresh();
+                ResetForm();
             }
         }
 
         private void btnResetForm_Click(object sender, EventArgs e)
         {
             ResetForm();
-
         }
 
         private void ResetForm()
@@ -266,6 +281,8 @@ namespace WinFormsApp1
             numTeacherId.Value = 0;
             txtTeacherFirstName.Text = string.Empty;
             txtTeacherLastName.Text = string.Empty;
+            numAge.Value = Convert.ToInt32(1);
+            dtStudentDateOfBirth.Value = new DateTime(1984, 1, 1);
             dgvResults.ClearSelection();
         }
     }
