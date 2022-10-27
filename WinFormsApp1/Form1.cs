@@ -74,9 +74,10 @@ namespace WinFormsApp1
 					{
 						//Reload teachers
 						ResetForm();
-						var dbTeachers = new BindingList<Teacher>(context.Teachers.ToList());
-						dgvResults.DataSource = dbTeachers;
-						dgvResults.Refresh();
+						//var dbTeachers = new BindingList<Teacher>(context.Teachers.ToList());
+						//dgvResults.DataSource = dbTeachers;
+						//dgvResults.Refresh();
+						LoadTeachers();
 					}
 				}
 			}
@@ -131,9 +132,10 @@ namespace WinFormsApp1
 					{
 						//Reload teachers
 						ResetForm();
-						var dbStudents = new BindingList<Student>(context.Students.ToList());
-						dgvResults.DataSource = dbStudents;
-						dgvResults.Refresh();
+						//var dbStudents = new BindingList<Student>(context.Students.ToList());
+						//dgvResults.DataSource = dbStudents;
+						//dgvResults.Refresh();
+						LoadStudents();
 					}
 				}
 			}
@@ -144,7 +146,7 @@ namespace WinFormsApp1
 			LoadTeachers();
 		}
 
-		private void LoadTeachers()
+		private void LoadTeachers(bool isSearch = false)
 		{
 			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
 			{
@@ -153,6 +155,15 @@ namespace WinFormsApp1
 				dgvResults.Refresh();
 				rdoTeacher.Checked = true;
 				rdoStudent.Checked = false;
+			}
+			if (!isSearch)
+			{
+				cboInstructor.SelectedIndex = -1;
+				cboInstructor.Items.Clear();
+				var data = dgvResults.DataSource as BindingList<Teacher>;
+				cboInstructor.Items.AddRange(data.ToArray());
+				cboInstructor.DisplayMember = "FullName";
+				cboInstructor.ValueMember = "Id";
 			}
 		}
 
@@ -289,8 +300,9 @@ namespace WinFormsApp1
 					{
 						context.Teachers.Remove(d);
 						context.SaveChanges();
-						var databaseTeachers = new BindingList<Teacher>(context.Teachers.ToList());
-						dgvResults.DataSource = databaseTeachers;
+						//var databaseTeachers = new BindingList<Teacher>(context.Teachers.ToList());
+						//dgvResults.DataSource = databaseTeachers;
+						LoadTeachers();
 					}
 					else
 					{
@@ -305,8 +317,9 @@ namespace WinFormsApp1
 					{
 						context.Students.Remove(d);
 						context.SaveChanges();
-						var databaseStudents = new BindingList<Student>(context.Students.ToList());
-						dgvResults.DataSource = databaseStudents;
+						//var databaseStudents = new BindingList<Student>(context.Students.ToList());
+						//dgvResults.DataSource = databaseStudents;
+						LoadStudents();
 					}
 					else
 					{
@@ -325,32 +338,29 @@ namespace WinFormsApp1
 
 		private void ResetForm()
 		{
-			numTeacherId.Value = 0;
-			txtTeacherFirstName.Text = string.Empty;
-			txtTeacherLastName.Text = string.Empty;
-			numAge.Value = Convert.ToInt32(0);
-			dtStudentDateOfBirth.Value = new DateTime(1900, 1, 1);
-			dgvResults.ClearSelection();
-		}
+            lblCourseId.Text = "0";
+            txtAbbreviation.Text = string.Empty;
+            txtDepartment.Text = string.Empty;
+            txtCourseName.Text = string.Empty;
+            cboInstructor.SelectedIndex = -1;
+            cboCredits.SelectedIndex = 2;
+        }
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			LoadTeachers();
+			LoadCourses();
 			ResetForm();
+			ResetCourseForm();
 
-            var tList = dgvResults.DataSource as BindingList<Teacher>;
-
-			cboInstructor.Items.AddRange(tList.ToArray());
-            cboInstructor.DisplayMember = "FullName";
-			cboInstructor.ValueMember = "Id";
-        }
+		}
 
 		private void btnSearch_Click(object sender, EventArgs e)
 		{
 
 			if (rdoTeacher.Checked)
 			{
-				LoadTeachers();
+				LoadTeachers(true);
 				var tList = dgvResults.DataSource as BindingList<Teacher>;
 				var fList = tList.Where(x => x.LastName.ToLower().Contains(txtTeacherLastName.Text.ToLower()) &&
 										x.FirstName.ToLower().Contains(txtTeacherFirstName.Text.ToLower())).ToList();
@@ -443,20 +453,178 @@ namespace WinFormsApp1
 			}
 		}
 
-        //BEGIN COURSE LOGIC
-        //
-        //
-        //
+		/*
+		 * 
+		 * 
+		 * BEGIN COURSE LOGIC
+		 *
+		 * 
+		 */
 
-        private void btnAddUpdateCourse_Click(object sender, EventArgs e)
+		private void btnAddUpdateCourse_Click(object sender, EventArgs e)
 		{
-			var teacherId = ((Teacher)cboInstructor.SelectedItem).Id;
-            
-            
+ 			bool modified = false;
+
+			//Get course info and store in temp variable
+			var newCourse = new Course();
+            newCourse.Id = Convert.ToInt32(lblCourseId.Text);
+            newCourse.Abbreviation = txtAbbreviation.Text;
+            newCourse.Department = txtDepartment.Text;
+            newCourse.Name = txtCourseName.Text;
+            newCourse.NumCredits = Convert.ToInt32(cboCredits.SelectedItem);
+            newCourse.TeacherId = ((Teacher)cboInstructor.SelectedItem).Id;
+
+
+            //Ensure teacher not in database
+
+            //using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+            //{
+            if (newCourse.Id > 0)
+			{
+				using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+				{
+					var existingCourse = context.Courses.SingleOrDefault(t => t.Id == newCourse.Id);
+
+					if (existingCourse is not null)
+					{
+						existingCourse.NumCredits = newCourse.NumCredits;
+						existingCourse.Abbreviation = newCourse.Abbreviation;
+						existingCourse.Department = newCourse.Department;
+						existingCourse.Name = newCourse.Name;
+						existingCourse.TeacherId = newCourse.TeacherId;
+						context.SaveChanges();
+						modified = true;
+					}
+					else
+					{
+						MessageBox.Show("Course not found. Could not update.");
+					}
+				}
+			}
+			else
+			{
+				using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+				{
+					var existingCourse = context.Courses.SingleOrDefault(c => c.Name.ToLower() == newCourse.Name.ToLower()
+														  && c.Abbreviation.ToLower() == newCourse.Abbreviation.ToLower()
+														  && c.TeacherId == newCourse.TeacherId);
+
+					if (existingCourse == null)
+					{
+						context.Courses.Add(newCourse);
+						context.SaveChanges();
+						modified = true;
+					}
+					else
+					{
+						MessageBox.Show("Course already exists, did you mean to update?");
+					}
+				}
+
+			}
+            if (modified)
+            {
+                //Reload teachers
+                ResetCourseForm();
+                //var dbTeachers = new BindingList<Teacher>(context.Teachers.ToList());
+                //dgvResults.DataSource = dbTeachers;
+                //dgvResults.Refresh();
+                LoadCourses();
+            }
+        }
+
+		private void cboInstructor_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			//Get selected teacher
+			var selectedTeacher = (Teacher)cboInstructor.SelectedItem;
+
+			//Get teacher's courses
+			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+			{
+			}
+		}
+
+		public void LoadCourses()
+		{
+			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+			{
+				var dbCourses = new BindingList<Course>(context.Courses.ToList());
+				dgvCourses.DataSource = dbCourses;
+				dgvCourses.Refresh();
+			}
+
+		}
+
+		private void btnShowCourses_Click(object sender, EventArgs e)
+		{
+			LoadCourses();
 
 		}
 
 
 
+		private void btnResetCourseForm_Click(object sender, EventArgs e)
+		{
+			ResetCourseForm();
+		}
+
+		private void ResetCourseForm()
+		{
+			lblCourseId.Text = "0";
+			txtCourseName.Text = string.Empty;
+			txtAbbreviation.Text = string.Empty;
+			txtDepartment.Text = string.Empty;
+			cboInstructor.SelectedIndex = -1;
+			cboCredits.SelectedIndex = 2;
+			dgvCourses.ClearSelection();
+		}
+
+		private void dgvCourses_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			var theRow = dgvResults.Rows[e.RowIndex];
+			int dataId = 0;
+
+			foreach (DataGridViewTextBoxCell cell in theRow.Cells)
+			{
+
+				if (cell.OwningColumn.Name.Equals("Id", StringComparison.OrdinalIgnoreCase))
+				{
+					dataId = (int)cell.Value;
+					if (dataId == 0)
+					{
+						MessageBox.Show("Bad row clicked");
+						ResetForm();
+						return;
+					}
+				}
+			}
+			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+			{
+				var d = context.Courses.SingleOrDefault(x => x.Id == dataId);
+
+                lblCourseId.Text = d.Id.ToString();
+                txtCourseName.Text = d.Name;
+				txtAbbreviation.Text = d.Abbreviation;
+				txtDepartment.Text = d.Department;
+
+				foreach (var item in cboCredits.Items)
+				{
+                    if (Convert.ToInt32(item) == d.NumCredits)
+                    {
+                        cboCredits.SelectedItem = item;
+                    }
+				}
+                foreach (var item in cboInstructor.Items)
+                {
+                    var t = (Teacher)item;
+                    if (t.Id == d.TeacherId)
+                    {
+                        cboInstructor.SelectedItem = item;
+                    }
+                }
+
+            }
+
+		}
 	}
 }

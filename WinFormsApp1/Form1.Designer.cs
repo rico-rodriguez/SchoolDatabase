@@ -56,7 +56,6 @@
             this.btnResetCourseForm = new System.Windows.Forms.Button();
             this.dgvCourses = new System.Windows.Forms.DataGridView();
             this.cboCredits = new System.Windows.Forms.ComboBox();
-            this.cboInstructor = new System.Windows.Forms.ComboBox();
             this.txtDepartment = new System.Windows.Forms.TextBox();
             this.txtAbbreviation = new System.Windows.Forms.TextBox();
             this.txtCourseName = new System.Windows.Forms.TextBox();
@@ -70,6 +69,7 @@
             this.btnShowCourses = new System.Windows.Forms.Button();
             this.btnDeleteCourse = new System.Windows.Forms.Button();
             this.btnAddUpdateCourse = new System.Windows.Forms.Button();
+            this.cboInstructor = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAge)).BeginInit();
@@ -123,7 +123,6 @@
             this.txtTeacherFirstName.Name = "txtTeacherFirstName";
             this.txtTeacherFirstName.Size = new System.Drawing.Size(200, 23);
             this.txtTeacherFirstName.TabIndex = 8;
-            this.txtTeacherFirstName.TextChanged += new System.EventHandler(this.btnSearch_Click);
             // 
             // txtTeacherLastName
             // 
@@ -131,7 +130,6 @@
             this.txtTeacherLastName.Name = "txtTeacherLastName";
             this.txtTeacherLastName.Size = new System.Drawing.Size(200, 23);
             this.txtTeacherLastName.TabIndex = 9;
-            this.txtTeacherLastName.TextChanged += new System.EventHandler(this.btnSearch_Click);
             // 
             // btnAddTeacher
             // 
@@ -360,7 +358,6 @@
             this.tabCourses.Controls.Add(this.btnResetCourseForm);
             this.tabCourses.Controls.Add(this.dgvCourses);
             this.tabCourses.Controls.Add(this.cboCredits);
-            this.tabCourses.Controls.Add(this.cboInstructor);
             this.tabCourses.Controls.Add(this.txtDepartment);
             this.tabCourses.Controls.Add(this.txtAbbreviation);
             this.tabCourses.Controls.Add(this.txtCourseName);
@@ -374,6 +371,7 @@
             this.tabCourses.Controls.Add(this.btnShowCourses);
             this.tabCourses.Controls.Add(this.btnDeleteCourse);
             this.tabCourses.Controls.Add(this.btnAddUpdateCourse);
+            this.tabCourses.Controls.Add(this.cboInstructor);
             this.tabCourses.Location = new System.Drawing.Point(4, 24);
             this.tabCourses.Name = "tabCourses";
             this.tabCourses.Padding = new System.Windows.Forms.Padding(3);
@@ -389,6 +387,7 @@
             this.btnResetCourseForm.TabIndex = 17;
             this.btnResetCourseForm.Text = "Reset Form";
             this.btnResetCourseForm.UseVisualStyleBackColor = true;
+            this.btnResetCourseForm.Click += new System.EventHandler(this.btnResetCourseForm_Click);
             // 
             // dgvCourses
             // 
@@ -398,6 +397,7 @@
             this.dgvCourses.RowTemplate.Height = 25;
             this.dgvCourses.Size = new System.Drawing.Size(465, 195);
             this.dgvCourses.TabIndex = 16;
+            this.dgvCourses.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCourses_CellClick);
             // 
             // cboCredits
             // 
@@ -413,14 +413,6 @@
             this.cboCredits.Name = "cboCredits";
             this.cboCredits.Size = new System.Drawing.Size(245, 23);
             this.cboCredits.TabIndex = 15;
-            // 
-            // cboInstructor
-            // 
-            this.cboInstructor.FormattingEnabled = true;
-            this.cboInstructor.Location = new System.Drawing.Point(104, 98);
-            this.cboInstructor.Name = "cboInstructor";
-            this.cboInstructor.Size = new System.Drawing.Size(245, 23);
-            this.cboInstructor.TabIndex = 14;
             // 
             // txtDepartment
             // 
@@ -491,16 +483,16 @@
             // lblCourseId
             // 
             this.lblCourseId.AutoSize = true;
-            this.lblCourseId.Location = new System.Drawing.Point(439, 140);
+            this.lblCourseId.Location = new System.Drawing.Point(461, 373);
             this.lblCourseId.Name = "lblCourseId";
-            this.lblCourseId.Size = new System.Drawing.Size(35, 15);
+            this.lblCourseId.Size = new System.Drawing.Size(13, 15);
             this.lblCourseId.TabIndex = 4;
-            this.lblCourseId.Text = "value";
+            this.lblCourseId.Text = "0";
             // 
             // lblId
             // 
             this.lblId.AutoSize = true;
-            this.lblId.Location = new System.Drawing.Point(420, 140);
+            this.lblId.Location = new System.Drawing.Point(442, 373);
             this.lblId.Name = "lblId";
             this.lblId.Size = new System.Drawing.Size(21, 15);
             this.lblId.TabIndex = 3;
@@ -512,8 +504,9 @@
             this.btnShowCourses.Name = "btnShowCourses";
             this.btnShowCourses.Size = new System.Drawing.Size(113, 23);
             this.btnShowCourses.TabIndex = 2;
-            this.btnShowCourses.Text = "Show Courses";
+            this.btnShowCourses.Text = "Load Courses";
             this.btnShowCourses.UseVisualStyleBackColor = true;
+            this.btnShowCourses.Click += new System.EventHandler(this.btnShowCourses_Click);
             // 
             // btnDeleteCourse
             // 
@@ -533,6 +526,15 @@
             this.btnAddUpdateCourse.Text = "Add/Update Course";
             this.btnAddUpdateCourse.UseVisualStyleBackColor = true;
             this.btnAddUpdateCourse.Click += new System.EventHandler(this.btnAddUpdateCourse_Click);
+            // 
+            // cboInstructor
+            // 
+            this.cboInstructor.FormattingEnabled = true;
+            this.cboInstructor.Location = new System.Drawing.Point(104, 98);
+            this.cboInstructor.Name = "cboInstructor";
+            this.cboInstructor.Size = new System.Drawing.Size(245, 23);
+            this.cboInstructor.TabIndex = 14;
+            this.cboInstructor.SelectedIndexChanged += new System.EventHandler(this.cboInstructor_SelectedIndexChanged);
             // 
             // Form1
             // 
