@@ -48,6 +48,8 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnResetForm = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.cbSort = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAge)).BeginInit();
@@ -179,13 +181,12 @@
             // 
             // btnLoadTeachers
             // 
-            this.btnLoadTeachers.Location = new System.Drawing.Point(457, 363);
+            this.btnLoadTeachers.Location = new System.Drawing.Point(324, 12);
             this.btnLoadTeachers.Name = "btnLoadTeachers";
-            this.btnLoadTeachers.Size = new System.Drawing.Size(98, 23);
+            this.btnLoadTeachers.Size = new System.Drawing.Size(127, 23);
             this.btnLoadTeachers.TabIndex = 21;
             this.btnLoadTeachers.Text = "Load Teachers";
             this.btnLoadTeachers.UseVisualStyleBackColor = true;
-            this.btnLoadTeachers.Visible = false;
             this.btnLoadTeachers.Click += new System.EventHandler(this.btnLoadTeachers_Click_1);
             // 
             // rdoTeacher
@@ -193,7 +194,7 @@
             this.rdoTeacher.AutoSize = true;
             this.rdoTeacher.Checked = true;
             this.rdoTeacher.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.rdoTeacher.Location = new System.Drawing.Point(28, 12);
+            this.rdoTeacher.Location = new System.Drawing.Point(3, 9);
             this.rdoTeacher.Name = "rdoTeacher";
             this.rdoTeacher.Size = new System.Drawing.Size(64, 17);
             this.rdoTeacher.TabIndex = 22;
@@ -206,7 +207,7 @@
             // 
             this.rdoStudent.AutoSize = true;
             this.rdoStudent.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.rdoStudent.Location = new System.Drawing.Point(28, 35);
+            this.rdoStudent.Location = new System.Drawing.Point(72, 9);
             this.rdoStudent.Name = "rdoStudent";
             this.rdoStudent.Size = new System.Drawing.Size(66, 17);
             this.rdoStudent.TabIndex = 23;
@@ -218,21 +219,20 @@
             // 
             this.panel1.Controls.Add(this.rdoStudent);
             this.panel1.Controls.Add(this.rdoTeacher);
-            this.panel1.Location = new System.Drawing.Point(324, 5);
+            this.panel1.Location = new System.Drawing.Point(156, 35);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(127, 62);
+            this.panel1.Size = new System.Drawing.Size(149, 32);
             this.panel1.TabIndex = 24;
             // 
             // btnLoadStudents
             // 
             this.btnLoadStudents.BackColor = System.Drawing.Color.Transparent;
-            this.btnLoadStudents.Location = new System.Drawing.Point(457, 363);
+            this.btnLoadStudents.Location = new System.Drawing.Point(324, 40);
             this.btnLoadStudents.Name = "btnLoadStudents";
-            this.btnLoadStudents.Size = new System.Drawing.Size(98, 23);
+            this.btnLoadStudents.Size = new System.Drawing.Size(127, 23);
             this.btnLoadStudents.TabIndex = 25;
             this.btnLoadStudents.Text = "Load Students";
             this.btnLoadStudents.UseVisualStyleBackColor = false;
-            this.btnLoadStudents.Visible = false;
             this.btnLoadStudents.Click += new System.EventHandler(this.btnLoadStudents_Click);
             // 
             // btnDelete
@@ -265,12 +265,37 @@
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // cbSort
+            // 
+            this.cbSort.FormattingEnabled = true;
+            this.cbSort.Items.AddRange(new object[] {
+            "Last Name (Ascending)",
+            "Last Name (Descending)",
+            "First Name (Ascending)",
+            "First Name (Descending)"});
+            this.cbSort.Location = new System.Drawing.Point(105, 182);
+            this.cbSort.Name = "cbSort";
+            this.cbSort.Size = new System.Drawing.Size(202, 23);
+            this.cbSort.TabIndex = 29;
+            this.cbSort.SelectedIndexChanged += new System.EventHandler(this.cbSort_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(68, 185);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(31, 15);
+            this.label4.TabIndex = 30;
+            this.label4.Text = "Sort:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(471, 391);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.cbSort);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btnResetForm);
             this.Controls.Add(this.btnDelete);
@@ -289,7 +314,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "Form1";
             this.Text = "School Database";
@@ -326,5 +351,7 @@
         private Button btnDelete;
         private Button btnResetForm;
         private Button btnSearch;
+        private ComboBox cbSort;
+        private Label label4;
     }
 }
