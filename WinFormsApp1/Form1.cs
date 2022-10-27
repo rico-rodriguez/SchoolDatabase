@@ -337,7 +337,13 @@ namespace WinFormsApp1
 		{
 			LoadTeachers();
 			ResetForm();
-		}
+
+            var tList = dgvResults.DataSource as BindingList<Teacher>;
+
+			cboInstructor.Items.AddRange(tList.ToArray());
+            cboInstructor.DisplayMember = "FullName";
+			cboInstructor.ValueMember = "Id";
+        }
 
 		private void btnSearch_Click(object sender, EventArgs e)
 		{
@@ -439,8 +445,18 @@ namespace WinFormsApp1
 
         //BEGIN COURSE LOGIC
         //
-		//
-		//
-        
-    }
+        //
+        //
+
+        private void btnAddUpdateCourse_Click(object sender, EventArgs e)
+		{
+			var teacherId = ((Teacher)cboInstructor.SelectedItem).Id;
+            
+            
+
+		}
+
+
+
+	}
 }

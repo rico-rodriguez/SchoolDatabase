@@ -53,6 +53,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TabTeachersStudents = new System.Windows.Forms.TabPage();
             this.tabCourses = new System.Windows.Forms.TabPage();
+            this.btnResetCourseForm = new System.Windows.Forms.Button();
             this.dgvCourses = new System.Windows.Forms.DataGridView();
             this.cboCredits = new System.Windows.Forms.ComboBox();
             this.cboInstructor = new System.Windows.Forms.ComboBox();
@@ -69,7 +70,6 @@
             this.btnShowCourses = new System.Windows.Forms.Button();
             this.btnDeleteCourse = new System.Windows.Forms.Button();
             this.btnAddUpdateCourse = new System.Windows.Forms.Button();
-            this.btnResetCourseForm = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAge)).BeginInit();
@@ -381,6 +381,15 @@
             this.tabCourses.TabIndex = 1;
             this.tabCourses.Text = "Courses";
             // 
+            // btnResetCourseForm
+            // 
+            this.btnResetCourseForm.Location = new System.Drawing.Point(361, 98);
+            this.btnResetCourseForm.Name = "btnResetCourseForm";
+            this.btnResetCourseForm.Size = new System.Drawing.Size(113, 23);
+            this.btnResetCourseForm.TabIndex = 17;
+            this.btnResetCourseForm.Text = "Reset Form";
+            this.btnResetCourseForm.UseVisualStyleBackColor = true;
+            // 
             // dgvCourses
             // 
             this.dgvCourses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -523,15 +532,7 @@
             this.btnAddUpdateCourse.TabIndex = 0;
             this.btnAddUpdateCourse.Text = "Add/Update Course";
             this.btnAddUpdateCourse.UseVisualStyleBackColor = true;
-            // 
-            // btnResetCourseForm
-            // 
-            this.btnResetCourseForm.Location = new System.Drawing.Point(361, 98);
-            this.btnResetCourseForm.Name = "btnResetCourseForm";
-            this.btnResetCourseForm.Size = new System.Drawing.Size(113, 23);
-            this.btnResetCourseForm.TabIndex = 17;
-            this.btnResetCourseForm.Text = "Reset Form";
-            this.btnResetCourseForm.UseVisualStyleBackColor = true;
+            this.btnAddUpdateCourse.Click += new System.EventHandler(this.btnAddUpdateCourse_Click);
             // 
             // Form1
             // 

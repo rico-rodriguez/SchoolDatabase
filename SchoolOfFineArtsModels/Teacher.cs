@@ -19,9 +19,9 @@ namespace SchoolOfFineArtsModels
         public int Age { get; set; }
 
         public virtual List<Course> Courses { get; set; } = new List<Course>();
-        
-        
 
+
+        public string FullName => $"{FirstName} {LastName}";
 
         //override equals to take in an object and compare to teacher
 
