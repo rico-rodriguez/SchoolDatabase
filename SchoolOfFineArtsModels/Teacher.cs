@@ -18,6 +18,10 @@ namespace SchoolOfFineArtsModels
         [Required, Range(1,130)]
         public int Age { get; set; }
 
+        public virtual List<Course> Courses { get; set; } = new List<Course>();
+        
+        
+
 
         //override equals to take in an object and compare to teacher
 

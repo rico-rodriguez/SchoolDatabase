@@ -99,6 +99,7 @@
             this.txtTeacherFirstName.Name = "txtTeacherFirstName";
             this.txtTeacherFirstName.Size = new System.Drawing.Size(200, 23);
             this.txtTeacherFirstName.TabIndex = 8;
+            this.txtTeacherFirstName.TextChanged += new System.EventHandler(this.btnSearch_Click);
             // 
             // txtTeacherLastName
             // 
@@ -106,6 +107,7 @@
             this.txtTeacherLastName.Name = "txtTeacherLastName";
             this.txtTeacherLastName.Size = new System.Drawing.Size(200, 23);
             this.txtTeacherLastName.TabIndex = 9;
+            this.txtTeacherLastName.TextChanged += new System.EventHandler(this.btnSearch_Click);
             // 
             // btnAddTeacher
             // 
@@ -314,7 +316,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "Form1";
             this.Text = "School Database";
