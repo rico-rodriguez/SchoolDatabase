@@ -436,5 +436,11 @@ namespace WinFormsApp1
 
 			}
 		}
+
+        //BEGIN COURSE LOGIC
+        //
+		//
+		//
+        
     }
 }
