@@ -29,6 +29,9 @@ namespace SchoolOfFineArtsModels
 
         public virtual Teacher Teacher { get; set; }
 
+
+
+
         public virtual List<CourseEnrollment> CourseEnrollments { get; set; } = new List<CourseEnrollment>();
     }
 }
