@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolOfFineArts", "WinFormsApp1\SchoolOfFineArts.csproj", "{7E6D40B8-A0C6-4056-A0F5-0B94035C7293}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolOfFineArts", "WinFormsApp1\SchoolOfFineArts.csproj", "{7E6D40B8-A0C6-4056-A0F5-0B94035C7293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolOfFineArtsModels", "SchoolOfFineArtsModels\SchoolOfFineArtsModels.csproj", "{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolOfFineArtsModels", "SchoolOfFineArtsModels\SchoolOfFineArtsModels.csproj", "{48735BDD-02E6-4F0B-90B0-DD3CB5CFFC1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolOfFineArtsDB", "SchoolOfFineArtsDB\SchoolOfFineArtsDB.csproj", "{9ED2EDC5-82CE-497F-8752-DAF3A300BFFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolOfFineArtsDB", "SchoolOfFineArtsDB\SchoolOfFineArtsDB.csproj", "{9ED2EDC5-82CE-497F-8752-DAF3A300BFFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
