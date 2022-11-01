@@ -3,6 +3,8 @@ using SchoolOfFineArtsDB;
 using SchoolOfFineArtsModels;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
+using System.Text;
 
 namespace WinFormsApp1
 {
@@ -22,7 +24,6 @@ namespace WinFormsApp1
 		{
 			bool modified = false;
 			var teacher = new Teacher();
-			//teacher.Id = 0;
 			teacher.Id = Convert.ToInt32(Math.Round(numTeacherId.Value));
 			teacher.FirstName = txtTeacherFirstName.Text;
 			teacher.LastName = txtTeacherLastName.Text;
@@ -79,7 +80,6 @@ namespace WinFormsApp1
 			bool modified = false;
 
 			var student = new Student();
-			//student.Id = 0;
 			student.Id = Convert.ToInt32(Math.Round(numStudentId.Value));
 			student.FirstName = txtStudentFirstName.Text;
 			student.LastName = txtStudentLastName.Text;
@@ -105,7 +105,6 @@ namespace WinFormsApp1
 					{
 						MessageBox.Show("Teacher not found. Could not update.");
 					}
-
 				}
 				else
 				{
@@ -177,6 +176,18 @@ namespace WinFormsApp1
 
 		private void dgvResults_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
+			try
+			{
+				if (e.RowIndex < 0)
+				{
+					ResetForm();
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
 			var theRow = dgvResults.Rows[e.RowIndex];
 			int dataId = 0;
 
@@ -209,6 +220,18 @@ namespace WinFormsApp1
 		}
 		private void dgvResultsStudents_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
+			try
+			{
+				if (e.RowIndex < 0)
+				{
+					ResetForm();
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
 			var theRow = dgvResultsStudents.Rows[e.RowIndex];
 			int dataId = 0;
 
@@ -308,8 +331,17 @@ namespace WinFormsApp1
 			cboCredits.SelectedIndex = 2;
 			txtTeacherFirstName.Text = string.Empty;
 			txtTeacherLastName.Text = string.Empty;
+			txtStudentFirstName.Text = string.Empty;
+			txtStudentLastName.Text = string.Empty;
+			txtSelectedCourseId.Text = string.Empty;
+			txtSelectedCourseName.Text = string.Empty;
 			numAge.Value = 0;
 			numTeacherId.Value = 0;
+
+			dgvCourses.ClearSelection();
+			dgvCourseAssignments.ClearSelection();
+			dgvResultsStudents.ClearSelection();
+			dgvResults.ClearSelection();
 		}
 		private void btnResetStudentForm_Click(object sender, EventArgs e)
 		{
@@ -325,8 +357,6 @@ namespace WinFormsApp1
 			LoadStudents();
 			LoadCourses();
 			ResetForm();
-			ResetCourseForm();
-
 		}
 
 		private void btnSearch_Click(object sender, EventArgs e)
@@ -452,7 +482,6 @@ namespace WinFormsApp1
 					var existingCourse = context.Courses.SingleOrDefault(c => c.Name.ToLower() == newCourse.Name.ToLower()
 														  && c.Abbreviation.ToLower() == newCourse.Abbreviation.ToLower()
 														  && c.TeacherId == newCourse.TeacherId);
-
 					if (existingCourse == null)
 					{
 						context.Courses.Add(newCourse);
@@ -468,7 +497,7 @@ namespace WinFormsApp1
 			}
 			if (modified)
 			{
-				ResetCourseForm();
+				ResetForm();
 				LoadCourses();
 			}
 		}
@@ -505,43 +534,59 @@ namespace WinFormsApp1
 				//							TeacherID = y.TeacherId,
 				//							TeacherName = y.Teacher.FullName
 				//						});
+				var otherCourses = context.Courses.Include(x => x.Teacher)
+										.Select(y => new
+										{
+											Id = y.Id,
+											CourseName = y.Name,
+											Abbreviation = y.Abbreviation,
+											//Department = y.Department,
+											Credits = y.NumCredits,
+											TeacherID = y.TeacherId,
+											TeacherName = y.Teacher.FullName
+										});
 
 				//dgvCourses.DataSource = otherCourses;
 				dgvCourses.DataSource = dbCourses.ToList();
 				dgvCourses.Refresh();
-				dgvCourseAssignments.DataSource = dbCourses.ToList();
+				dgvCourseAssignments.DataSource = otherCourses.ToList();
 				dgvCourseAssignments.Refresh();
+				dgvCourseAssignments.Columns["TeacherId"].Visible = false;
+				dgvCourseAssignments.Columns["Abbreviation"].Visible = false;
+				dgvCourseAssignments.Columns["Credits"].Width = 50;
+				dgvCourseAssignments.Columns["Id"].Width = 20;
+				dgvCourseAssignments.Columns["TeacherName"].Width = 129;
 
 			}
-
 		}
 
 		private void btnShowCourses_Click(object sender, EventArgs e)
 		{
 			LoadCourses();
-
 		}
 
 
 
 		private void btnResetCourseForm_Click(object sender, EventArgs e)
 		{
-			ResetCourseForm();
+			ResetForm();
 		}
 
-		private void ResetCourseForm()
-		{
-			lblCourseId.Text = "0";
-			txtCourseName.Text = string.Empty;
-			txtAbbreviation.Text = string.Empty;
-			txtDepartment.Text = string.Empty;
-			cboInstructor.SelectedIndex = -1;
-			cboCredits.SelectedIndex = 2;
-			dgvCourses.ClearSelection();
-		}
 
 		private void dgvCourses_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
+			try
+			{
+				if (e.RowIndex < 0)
+				{
+					ResetForm();
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
 			var theRow = dgvCourses.Rows[e.RowIndex];
 			int dataId = 0;
 
@@ -627,7 +672,7 @@ namespace WinFormsApp1
 			//Sort courses by selected criteria
 			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
 			{
-                var dbCourses = new BindingList<Course>(context.Courses.Include(x => x.Teacher).ToList());
+				var dbCourses = new BindingList<Course>(context.Courses.Include(x => x.Teacher).ToList());
 
 				switch (cbSortCourses.SelectedIndex)
 				{
@@ -638,18 +683,17 @@ namespace WinFormsApp1
 						dbCourses = new BindingList<Course>(dbCourses.OrderByDescending(x => x.Name).ToList());
 						break;
 					case 2:
-						//sort by teacher name
 						dbCourses = new BindingList<Course>(dbCourses.OrderBy(x => x.NumCredits).ToList());
 						break;
 					case 3:
 						dbCourses = new BindingList<Course>(dbCourses.OrderByDescending(x => x.NumCredits).ToList());
 						break;
 					case 4:
-                        dbCourses = new BindingList<Course>(dbCourses.OrderBy(x => x.Teacher.LastName).ToList());
-                        break;
+						dbCourses = new BindingList<Course>(dbCourses.OrderBy(x => x.Teacher.LastName).ToList());
+						break;
 					case 5:
-                        dbCourses = new BindingList<Course>(dbCourses.OrderByDescending(x => x.Teacher.LastName).ToList());
-                        break;
+						dbCourses = new BindingList<Course>(dbCourses.OrderByDescending(x => x.Teacher.LastName).ToList());
+						break;
 					default:
 						break;
 				}
@@ -681,7 +725,190 @@ namespace WinFormsApp1
 			}
 		}
 
+		private void dgvCourseAssignments_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			try
+			{
+				if (e.RowIndex < 0)
+				{
+					ResetForm();
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
 
+			var theRow = dgvCourseAssignments.Rows[e.RowIndex];
+			int dataId = 0;
+
+			foreach (DataGridViewTextBoxCell cell in theRow.Cells)
+			{
+
+				if (cell.OwningColumn.Name.Equals("Id", StringComparison.OrdinalIgnoreCase))
+				{
+					dataId = (int)cell.Value;
+					if (dataId == 0)
+					{
+						MessageBox.Show("Bad row clicked");
+						return;
+					}
+					btnAssociate.Enabled = true;
+					btnAssociate.BackColor = Color.Transparent;
+					btnAssociate.Cursor = DefaultCursor;
+					txtSelectedCourseId.Text = dataId.ToString();
+					txtSelectedCourseName.Text = theRow.Cells["CourseName"].Value.ToString();
+				}
+			}
+		}
+
+		private void btnClearStudentList_Click(object sender, EventArgs e)
+		{
+			ResetStudentListForm();
+		}
+
+		private void ResetStudentListForm()
+		{
+			lstStudents.ClearSelected();
+			//uncheck all boxes in the list
+			foreach (int i in lstStudents.CheckedIndices)
+			{
+				lstStudents.SetItemChecked(i, false);
+			}
+		}
+
+		private void btnAssociate_Click(object sender, EventArgs e)
+		{
+			btnAssociate.Enabled = false;
+			var courseId = 0;
+			try
+			{
+				courseId = Convert.ToInt32(txtSelectedCourseId.Text);
+			}
+			catch (Exception ex)
+			{
+				SendMessageBox("Please ensure all fields are filled out properly", "Error");
+				Debug.WriteLine(ex.Message);
+				return;
+			}
+			var courseName = txtSelectedCourseName.Text;
+			if (lstStudents.CheckedItems.Count == 0)
+			{
+				SendMessageBox("Please select a student to associate with a course. Select a student", "Select a student");
+				return;
+			}
+			if (string.IsNullOrEmpty(txtSelectedCourseId.Text) || courseId < 1)
+			{
+				SendMessageBox("Please select a course to associate with a student.", "Select a course");
+				return;
+			}
+
+			var students = lstStudents.CheckedItems.Cast<Student>().ToList();
+			StringBuilder sb = StringOfNames(students);
+			var confirmAssociate = SendYesNoMessageBox($"Are you sure you want to associate {sb} to {courseName}?", "Confirm");
+			if (confirmAssociate == DialogResult.No)
+			{
+				DialogResult confirmReset = SendYesNoMessageBox("Do you want to reset your form ?", "Confirm Reset");
+				if (confirmReset == DialogResult.Yes)
+				{
+					ResetForm();
+					ResetStudentListForm();
+				}
+				btnAssociate.Enabled = false;
+				return;
+
+			}
+			bool success = AddStudentsToCourseAssociation(students, courseId, courseName);
+
+			if (success)
+			{
+				ResetForm();
+				ResetStudentListForm();
+			}
+		}
+
+		private static DialogResult SendYesNoMessageBox(string message, string caption)
+		{
+			return MessageBox.Show(message, caption,
+													MessageBoxButtons.YesNo,
+													MessageBoxIcon.Question);
+		}
+
+		private static void SendMessageBox(string message, string caption)
+		{
+			var buttonType = MessageBoxButtons.OK;
+			var iconType = MessageBoxIcon.Information;
+
+			MessageBox.Show($"{message}", $"{caption}", buttonType, iconType);
+		}
+
+		private bool AddStudentsToCourseAssociation(List<Student> students, int courseId, string courseName)
+		{
+			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+			{
+				bool modified = false;
+				var existingCourse = context.Courses.Include(x => x.CourseEnrollments).SingleOrDefault(t => t.Id == courseId);
+				if (existingCourse is null)
+				{
+					SendMessageBox($"{existingCourse.Name} does not exist.", "Error");
+					return false;
+				}
+				foreach (var student in students)
+				{
+					var existingStudent = context.Students.Include(x => x.CourseEnrollments).SingleOrDefault(s => s.Id == student.Id);
+					if (existingStudent is null)
+					{
+						SendMessageBox($"{existingStudent} not found. Could not update.", "Error");
+						continue;
+					}
+					var courseExists = false;
+					foreach (var enrollment in existingStudent.CourseEnrollments)
+					{
+						if (enrollment.Course is null)
+						{
+							break;
+						}
+						if (enrollment.Course.Id == existingCourse.Id)
+						{
+							SendMessageBox($"{student.FullName} is already enrolled in {courseName}", "Error");
+							courseExists = true;
+							break;
+						}
+					}
+					if (courseExists)
+					{
+						continue;
+					}
+					CourseEnrollment courseEnrollment = new CourseEnrollment();
+					courseEnrollment.CourseId = courseId;
+					courseEnrollment.StudentId = student.Id;
+					existingStudent.CourseEnrollments.Add(courseEnrollment);
+					modified = true;
+				}
+				if (modified)
+				{
+					SendMessageBox("Students have been enrolled.", "Success");
+					context.SaveChanges();
+				}
+			}
+			return true;
+		}
+
+		private static StringBuilder StringOfNames(List<Student> students)
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (var s in students)
+			{
+				if (sb.Length > 0)
+				{
+					sb.Append(", ");
+				}
+				sb.Append($"{s.FullName}");
+			}
+
+			return sb;
+		}
 	}
 }
 

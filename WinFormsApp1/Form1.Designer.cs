@@ -83,6 +83,9 @@
             this.numTeacherId = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tbStudentCourses = new System.Windows.Forms.TabPage();
+            this.btnClearStudentList = new System.Windows.Forms.Button();
+            this.txtSelectedCourseName = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.btnAssociate = new System.Windows.Forms.Button();
             this.lstStudents = new System.Windows.Forms.CheckedListBox();
             this.dgvCourseAssignments = new System.Windows.Forms.DataGridView();
@@ -695,6 +698,9 @@
             // 
             // tbStudentCourses
             // 
+            this.tbStudentCourses.Controls.Add(this.btnClearStudentList);
+            this.tbStudentCourses.Controls.Add(this.txtSelectedCourseName);
+            this.tbStudentCourses.Controls.Add(this.label17);
             this.tbStudentCourses.Controls.Add(this.btnAssociate);
             this.tbStudentCourses.Controls.Add(this.lstStudents);
             this.tbStudentCourses.Controls.Add(this.dgvCourseAssignments);
@@ -707,21 +713,55 @@
             this.tbStudentCourses.Text = "Student Courses";
             this.tbStudentCourses.UseVisualStyleBackColor = true;
             // 
+            // btnClearStudentList
+            // 
+            this.btnClearStudentList.Location = new System.Drawing.Point(3, 355);
+            this.btnClearStudentList.Name = "btnClearStudentList";
+            this.btnClearStudentList.Size = new System.Drawing.Size(160, 23);
+            this.btnClearStudentList.TabIndex = 7;
+            this.btnClearStudentList.Text = "Clear Selection";
+            this.btnClearStudentList.UseVisualStyleBackColor = true;
+            this.btnClearStudentList.Click += new System.EventHandler(this.btnClearStudentList_Click);
+            // 
+            // txtSelectedCourseName
+            // 
+            this.txtSelectedCourseName.AutoSize = true;
+            this.txtSelectedCourseName.Location = new System.Drawing.Point(248, 349);
+            this.txtSelectedCourseName.Name = "txtSelectedCourseName";
+            this.txtSelectedCourseName.Size = new System.Drawing.Size(0, 15);
+            this.txtSelectedCourseName.TabIndex = 6;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(166, 349);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(82, 15);
+            this.label17.TabIndex = 5;
+            this.label17.Text = "Course Name:";
+            // 
             // btnAssociate
             // 
-            this.btnAssociate.Location = new System.Drawing.Point(402, 344);
+            this.btnAssociate.BackColor = System.Drawing.Color.Gray;
+            this.btnAssociate.Cursor = System.Windows.Forms.Cursors.No;
+            this.btnAssociate.Enabled = false;
+            this.btnAssociate.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnAssociate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnAssociate.Location = new System.Drawing.Point(402, 362);
             this.btnAssociate.Name = "btnAssociate";
             this.btnAssociate.Size = new System.Drawing.Size(75, 23);
             this.btnAssociate.TabIndex = 4;
             this.btnAssociate.Text = "Associate";
-            this.btnAssociate.UseVisualStyleBackColor = true;
+            this.btnAssociate.UseVisualStyleBackColor = false;
+            this.btnAssociate.Click += new System.EventHandler(this.btnAssociate_Click);
             // 
             // lstStudents
             // 
+            this.lstStudents.CheckOnClick = true;
             this.lstStudents.FormattingEnabled = true;
             this.lstStudents.Location = new System.Drawing.Point(3, 3);
             this.lstStudents.Name = "lstStudents";
-            this.lstStudents.Size = new System.Drawing.Size(157, 382);
+            this.lstStudents.Size = new System.Drawing.Size(157, 346);
             this.lstStudents.TabIndex = 3;
             // 
             // dgvCourseAssignments
@@ -729,23 +769,24 @@
             this.dgvCourseAssignments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCourseAssignments.Location = new System.Drawing.Point(166, 3);
             this.dgvCourseAssignments.Name = "dgvCourseAssignments";
+            this.dgvCourseAssignments.RowHeadersWidth = 10;
             this.dgvCourseAssignments.RowTemplate.Height = 25;
             this.dgvCourseAssignments.Size = new System.Drawing.Size(311, 335);
             this.dgvCourseAssignments.TabIndex = 2;
+            this.dgvCourseAssignments.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCourseAssignments_CellClick);
             // 
             // txtSelectedCourseId
             // 
             this.txtSelectedCourseId.AutoSize = true;
-            this.txtSelectedCourseId.Location = new System.Drawing.Point(464, 370);
+            this.txtSelectedCourseId.Location = new System.Drawing.Point(228, 370);
             this.txtSelectedCourseId.Name = "txtSelectedCourseId";
-            this.txtSelectedCourseId.Size = new System.Drawing.Size(13, 15);
+            this.txtSelectedCourseId.Size = new System.Drawing.Size(0, 15);
             this.txtSelectedCourseId.TabIndex = 1;
-            this.txtSelectedCourseId.Text = "0";
             // 
             // lbSelectedCourseId
             // 
             this.lbSelectedCourseId.AutoSize = true;
-            this.lbSelectedCourseId.Location = new System.Drawing.Point(402, 370);
+            this.lbSelectedCourseId.Location = new System.Drawing.Point(166, 370);
             this.lbSelectedCourseId.Name = "lbSelectedCourseId";
             this.lbSelectedCourseId.Size = new System.Drawing.Size(61, 15);
             this.lbSelectedCourseId.TabIndex = 0;
@@ -844,5 +885,8 @@
         private Label lbSelectedCourseId;
         private Button btnAssociate;
         private CheckedListBox lstStudents;
+        private Label txtSelectedCourseName;
+        private Label label17;
+        private Button btnClearStudentList;
     }
 }
