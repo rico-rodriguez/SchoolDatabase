@@ -164,8 +164,11 @@
             // 
             this.dgvCourses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCourses.Location = new System.Drawing.Point(9, 172);
+            this.dgvCourses.MultiSelect = false;
             this.dgvCourses.Name = "dgvCourses";
+            this.dgvCourses.ReadOnly = true;
             this.dgvCourses.RowTemplate.Height = 25;
+            this.dgvCourses.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCourses.Size = new System.Drawing.Size(465, 195);
             this.dgvCourses.TabIndex = 16;
             this.dgvCourses.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCourses_CellClick);
@@ -353,8 +356,11 @@
             // 
             this.dgvResultsStudents.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvResultsStudents.Location = new System.Drawing.Point(6, 206);
+            this.dgvResultsStudents.MultiSelect = false;
             this.dgvResultsStudents.Name = "dgvResultsStudents";
+            this.dgvResultsStudents.ReadOnly = true;
             this.dgvResultsStudents.RowTemplate.Height = 25;
+            this.dgvResultsStudents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvResultsStudents.Size = new System.Drawing.Size(465, 176);
             this.dgvResultsStudents.TabIndex = 40;
             this.dgvResultsStudents.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvResultsStudents_CellClick);
@@ -547,8 +553,11 @@
             // 
             this.dgvResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvResults.Location = new System.Drawing.Point(6, 206);
+            this.dgvResults.MultiSelect = false;
             this.dgvResults.Name = "dgvResults";
+            this.dgvResults.ReadOnly = true;
             this.dgvResults.RowTemplate.Height = 25;
+            this.dgvResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvResults.Size = new System.Drawing.Size(465, 176);
             this.dgvResults.TabIndex = 18;
             this.dgvResults.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvResults_CellClick);
@@ -762,15 +771,19 @@
             this.lstStudents.Location = new System.Drawing.Point(3, 3);
             this.lstStudents.Name = "lstStudents";
             this.lstStudents.Size = new System.Drawing.Size(157, 346);
+            this.lstStudents.Sorted = true;
             this.lstStudents.TabIndex = 3;
             // 
             // dgvCourseAssignments
             // 
             this.dgvCourseAssignments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCourseAssignments.Location = new System.Drawing.Point(166, 3);
+            this.dgvCourseAssignments.MultiSelect = false;
             this.dgvCourseAssignments.Name = "dgvCourseAssignments";
+            this.dgvCourseAssignments.ReadOnly = true;
             this.dgvCourseAssignments.RowHeadersWidth = 10;
             this.dgvCourseAssignments.RowTemplate.Height = 25;
+            this.dgvCourseAssignments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCourseAssignments.Size = new System.Drawing.Size(311, 335);
             this.dgvCourseAssignments.TabIndex = 2;
             this.dgvCourseAssignments.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCourseAssignments_CellClick);

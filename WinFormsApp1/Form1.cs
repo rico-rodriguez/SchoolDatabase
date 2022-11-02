@@ -143,7 +143,12 @@ namespace SchoolOfFineArts
 				var dbTeachers = new BindingList<Teacher>(context.Teachers.ToList());
 				dgvResults.DataSource = dbTeachers;
 				dgvResults.Refresh();
+
 			}
+			dgvResults.Columns["FirstName"]!.Visible = false;
+			dgvResults.Columns["LastName"]!.Visible = false;
+			dgvResults.Columns["FullName"]!.Width = 200;
+
 
 			if (isSearch) return;
 			cboInstructor.SelectedIndex = -1;
@@ -152,6 +157,8 @@ namespace SchoolOfFineArts
 			cboInstructor.Items.AddRange(data!.ToArray());
 			cboInstructor.DisplayMember = "FullName";
 			cboInstructor.ValueMember = "Id";
+
+
 		}
 
 		private void btnLoadStudents_Click(object sender, EventArgs e)
@@ -165,9 +172,18 @@ namespace SchoolOfFineArts
 			var dbStudents = new BindingList<Student>(context.Students.ToList());
 			dgvResultsStudents.DataSource = dbStudents;
 			dgvResultsStudents.Refresh();
-
 			lstStudents.Items.Clear();
 			lstStudents.Items.AddRange(dbStudents.ToArray());
+
+			var dbStudentsClean = context.Students.Select(y => new
+			{
+				ID = y.Id,
+				Name = y.FullName,
+				DOB = y.DateOfBirth,
+			});
+			dgvResultsStudents.DataSource = dbStudentsClean.ToList();
+			dgvResultsStudents.Columns["Name"]!.Width = 220;
+			dgvResultsStudents.Refresh();
 		}
 
 
@@ -480,7 +496,6 @@ namespace SchoolOfFineArts
 		public void LoadCourses(bool isSearch = false)
 		{
 			using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
-			var dbCourses = new BindingList<Course>(context.Courses.Include(x => x.Teacher).ToList());
 			var otherCourses = context.Courses.Include(x => x.Teacher)
 				.Select(y => new
 				{
@@ -492,9 +507,6 @@ namespace SchoolOfFineArts
 					TeacherName = y.Teacher.FullName
 				});
 
-			dgvCourses.DataSource = dbCourses.ToList();
-			dgvCourses.Refresh();
-
 			dgvCourseAssignments.DataSource = otherCourses.ToList();
 			dgvCourseAssignments.Refresh();
 			dgvCourseAssignments.Columns["TeacherId"]!.Visible = false;
@@ -502,6 +514,16 @@ namespace SchoolOfFineArts
 			dgvCourseAssignments.Columns["Credits"]!.Width = 50;
 			dgvCourseAssignments.Columns["Id"]!.Width = 20;
 			dgvCourseAssignments.Columns["TeacherName"]!.Width = 129;
+
+			dgvCourses.DataSource = otherCourses.ToList();
+			dgvCourses.Columns["Abbreviation"]!.Visible = false;
+			dgvCourses.Columns["TeacherID"]!.Visible = false;
+			dgvCourses.Columns["Credits"]!.Width = 50;
+			dgvCourses.Columns["Id"]!.Width = 20;
+			dgvCourses.Columns["TeacherName"]!.Width = 175;
+			dgvCourses.Columns["CourseName"]!.Width = 175;
+
+			dgvCourses.Refresh();
 		}
 
 		private void btnShowCourses_Click(object sender, EventArgs e)
@@ -577,7 +599,6 @@ namespace SchoolOfFineArts
 					}
 				}
 			}
-
 		}
 
 		private void btnDeleteCourse_Click(object sender, EventArgs e)
@@ -659,6 +680,9 @@ namespace SchoolOfFineArts
 					LoadCourses();
 					ResetForm();
 					break;
+				case 3:
+					ResetForm();
+					break;
 			}
 		}
 
@@ -704,7 +728,6 @@ namespace SchoolOfFineArts
 		private void ResetStudentListForm()
 		{
 			lstStudents.ClearSelected();
-			//uncheck all boxes in the list
 			foreach (int i in lstStudents.CheckedIndices) lstStudents.SetItemChecked(i, false);
 		}
 
