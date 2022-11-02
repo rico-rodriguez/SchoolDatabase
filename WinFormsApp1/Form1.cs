@@ -49,7 +49,7 @@ namespace WinFormsApp1
 					}
 					else
 					{
-						MessageBox.Show("Teacher not found. Could not update.");
+						SendMessageBox("Teacher not found. Could not update.", "Error");
 					}
 				}
 				else
@@ -66,7 +66,7 @@ namespace WinFormsApp1
 					}
 					else
 					{
-						MessageBox.Show("Teacher already exists, did you mean to update?");
+						SendMessageBox("Teacher already exists, did you mean to update?", "Error");
 					}
 				}
 
@@ -195,7 +195,7 @@ namespace WinFormsApp1
 				{
 					dataId = (int)cell.Value;
 					if (dataId != 0) continue;
-					MessageBox.Show("Bad row clicked");
+					SendMessageBox("Bad row clicked", "Error");
 					ResetForm();
 					return;
 				}
@@ -232,7 +232,7 @@ namespace WinFormsApp1
 				{
 					dataId = (int)cell.Value;
 					if (dataId != 0) continue;
-					MessageBox.Show("Bad row clicked");
+					SendMessageBox("Bad row clicked", "Error");
 					ResetForm();
 					return;
 				}
@@ -249,9 +249,7 @@ namespace WinFormsApp1
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
 			var Id = (int)numTeacherId.Value;
-			var confirmDelete = MessageBox.Show("Are you sure you want to delete this item?"
-				, "Are you sure?"
-				, MessageBoxButtons.YesNo);
+			var confirmDelete = SendYesNoMessageBox("Are you sure you want to delete this item?", "Confirm");
 			if (confirmDelete == DialogResult.No) return;
 			using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
 			var d = context.Teachers.SingleOrDefault(t => t.Id == Id);
@@ -263,15 +261,13 @@ namespace WinFormsApp1
 			}
 			else
 			{
-				MessageBox.Show("Student not found, couldn't delete.");
+				SendMessageBox("Student not found, couldn't delete.", "Error");
 			}
 		}
 		private void btnStudentDelete_Click(object sender, EventArgs e)
 		{
 			var Id = (int)numStudentId.Value;
-			var confirmDelete = MessageBox.Show("Are you sure you want to delete this item?"
-				, "Are you sure?"
-				, MessageBoxButtons.YesNo);
+			var confirmDelete = SendYesNoMessageBox("Are you sure you want to delete this item?", "Confirm");
 			if (confirmDelete == DialogResult.No)
 			{
 				return;
@@ -287,7 +283,7 @@ namespace WinFormsApp1
 				}
 				else
 				{
-					MessageBox.Show("Student not found, couldn't delete.");
+					SendMessageBox("Student not found, couldn't delete.", "Error");
 				}
 
 				dgvResultsStudents.Refresh();
@@ -453,7 +449,7 @@ namespace WinFormsApp1
 					}
 					else
 					{
-						MessageBox.Show("Course not found. Could not update.");
+						SendMessageBox("Course not found. Could not update.", "Error");
 					}
 				}
 			}
@@ -471,7 +467,7 @@ namespace WinFormsApp1
 				}
 				else
 				{
-					MessageBox.Show("Course already exists, did you mean to update?");
+					SendMessageBox("Course already exists, did you mean to update?", "Error");
 				}
 			}
 			if (modified)
@@ -585,9 +581,7 @@ namespace WinFormsApp1
 		{
 			var Id = lblCourseId.Text;
 			var name = txtCourseName.Text;
-			var confirmDelete = MessageBox.Show($"Are you sure you want to delete [{name}]?"
-				, "Are you sure?"
-				, MessageBoxButtons.YesNo);
+			var confirmDelete = SendYesNoMessageBox($"Are you sure you want to delete [{name}]?", "Are you sure?");
 			if (confirmDelete == DialogResult.No) return;
 			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
 			{
@@ -689,7 +683,7 @@ namespace WinFormsApp1
 					dataId = (int)cell.Value;
 					if (dataId == 0)
 					{
-						MessageBox.Show("Bad row clicked");
+						SendMessageBox("Bad row clicked", "Error");
 						return;
 					}
 
@@ -746,13 +740,10 @@ namespace WinFormsApp1
 
 			var students = lstStudents.CheckedItems.Cast<Student>().ToList();
 			var sb = StringOfNames(students);
-			var confirmAssociate =
-				SendYesNoMessageBox($"Are you sure you want to associate {sb} to {courseName}?",
-					"Confirm");
+			var confirmAssociate = SendYesNoMessageBox($"Are you sure you want to associate {sb} to {courseName}?", "Confirm");
 			if (confirmAssociate == DialogResult.No)
 			{
-				var confirmReset = SendYesNoMessageBox("Do you want to reset your form ?",
-					"Confirm Reset");
+				var confirmReset = SendYesNoMessageBox("Do you want to reset your form ?", "Confirm Reset");
 				if (confirmReset == DialogResult.Yes)
 				{
 					ResetForm();
@@ -781,7 +772,6 @@ namespace WinFormsApp1
 		{
 			const MessageBoxButtons buttonType = MessageBoxButtons.OK;
 			var iconType = MessageBoxIcon.Information;
-
 			MessageBox.Show($"{message}", $"{caption}", buttonType, iconType);
 		}
 
