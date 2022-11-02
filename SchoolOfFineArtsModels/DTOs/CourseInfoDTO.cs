@@ -8,7 +8,7 @@
         public string StudentName { get; set; }
         public string CourseName { get; set; }
         public string TeacherName { get; set; }
-        public string CourseAbbreviation { get; set; }
-        public string CourseDepartment { get; set; }
+        public string Abbreviation { get; set; }
+        public string Department { get; set; }
     }
 }

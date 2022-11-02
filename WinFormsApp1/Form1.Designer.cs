@@ -81,7 +81,7 @@
             this.btnAddTeacher = new System.Windows.Forms.Button();
             this.btnLoadTeachers = new System.Windows.Forms.Button();
             this.numTeacherId = new System.Windows.Forms.NumericUpDown();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tbViewAssociations = new System.Windows.Forms.TabControl();
             this.tbStudentCourses = new System.Windows.Forms.TabPage();
             this.btnClearStudentList = new System.Windows.Forms.Button();
             this.txtSelectedCourseName = new System.Windows.Forms.Label();
@@ -91,6 +91,13 @@
             this.dgvCourseAssignments = new System.Windows.Forms.DataGridView();
             this.txtSelectedCourseId = new System.Windows.Forms.Label();
             this.lbSelectedCourseId = new System.Windows.Forms.Label();
+            this.tbAssociationViews = new System.Windows.Forms.TabPage();
+            this.btnAssociatePageButton = new System.Windows.Forms.Button();
+            this.txtSelectedAssociationCourseName = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtSelectedCourseAssociationStudentName = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.dgvAssociation = new System.Windows.Forms.DataGridView();
             this.tabCourses.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCourses)).BeginInit();
             this.Students.SuspendLayout();
@@ -100,9 +107,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.numAge)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).BeginInit();
-            this.tabControl1.SuspendLayout();
+            this.tbViewAssociations.SuspendLayout();
             this.tbStudentCourses.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCourseAssignments)).BeginInit();
+            this.tbAssociationViews.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAssociation)).BeginInit();
             this.SuspendLayout();
             // 
             // tabCourses
@@ -692,18 +701,19 @@
             this.numTeacherId.Size = new System.Drawing.Size(45, 23);
             this.numTeacherId.TabIndex = 17;
             // 
-            // tabControl1
+            // tbViewAssociations
             // 
-            this.tabControl1.Controls.Add(this.TabTeachersStudents);
-            this.tabControl1.Controls.Add(this.Students);
-            this.tabControl1.Controls.Add(this.tabCourses);
-            this.tabControl1.Controls.Add(this.tbStudentCourses);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(488, 416);
-            this.tabControl1.TabIndex = 31;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.tbViewAssociations.Controls.Add(this.TabTeachersStudents);
+            this.tbViewAssociations.Controls.Add(this.Students);
+            this.tbViewAssociations.Controls.Add(this.tabCourses);
+            this.tbViewAssociations.Controls.Add(this.tbStudentCourses);
+            this.tbViewAssociations.Controls.Add(this.tbAssociationViews);
+            this.tbViewAssociations.Location = new System.Drawing.Point(12, 12);
+            this.tbViewAssociations.Name = "tbViewAssociations";
+            this.tbViewAssociations.SelectedIndex = 0;
+            this.tbViewAssociations.Size = new System.Drawing.Size(488, 416);
+            this.tbViewAssociations.TabIndex = 31;
+            this.tbViewAssociations.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tbStudentCourses
             // 
@@ -805,13 +815,90 @@
             this.lbSelectedCourseId.TabIndex = 0;
             this.lbSelectedCourseId.Text = "Course ID:";
             // 
+            // tbAssociationViews
+            // 
+            this.tbAssociationViews.Controls.Add(this.btnAssociatePageButton);
+            this.tbAssociationViews.Controls.Add(this.txtSelectedAssociationCourseName);
+            this.tbAssociationViews.Controls.Add(this.label18);
+            this.tbAssociationViews.Controls.Add(this.txtSelectedCourseAssociationStudentName);
+            this.tbAssociationViews.Controls.Add(this.label20);
+            this.tbAssociationViews.Controls.Add(this.dgvAssociation);
+            this.tbAssociationViews.Location = new System.Drawing.Point(4, 24);
+            this.tbAssociationViews.Name = "tbAssociationViews";
+            this.tbAssociationViews.Padding = new System.Windows.Forms.Padding(3);
+            this.tbAssociationViews.Size = new System.Drawing.Size(480, 388);
+            this.tbAssociationViews.TabIndex = 4;
+            this.tbAssociationViews.Text = "Associations";
+            this.tbAssociationViews.UseVisualStyleBackColor = true;
+            // 
+            // btnAssociatePageButton
+            // 
+            this.btnAssociatePageButton.BackColor = System.Drawing.Color.Gray;
+            this.btnAssociatePageButton.Enabled = false;
+            this.btnAssociatePageButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnAssociatePageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnAssociatePageButton.Location = new System.Drawing.Point(355, 359);
+            this.btnAssociatePageButton.Name = "btnAssociatePageButton";
+            this.btnAssociatePageButton.Size = new System.Drawing.Size(119, 23);
+            this.btnAssociatePageButton.TabIndex = 11;
+            this.btnAssociatePageButton.Text = "Remove Student";
+            this.btnAssociatePageButton.UseVisualStyleBackColor = false;
+            this.btnAssociatePageButton.Click += new System.EventHandler(this.btnAssociatePageButton_Click);
+            // 
+            // txtSelectedAssociationCourseName
+            // 
+            this.txtSelectedAssociationCourseName.AutoSize = true;
+            this.txtSelectedAssociationCourseName.Location = new System.Drawing.Point(88, 342);
+            this.txtSelectedAssociationCourseName.Name = "txtSelectedAssociationCourseName";
+            this.txtSelectedAssociationCourseName.Size = new System.Drawing.Size(0, 15);
+            this.txtSelectedAssociationCourseName.TabIndex = 10;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(6, 342);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(82, 15);
+            this.label18.TabIndex = 9;
+            this.label18.Text = "Course Name:";
+            // 
+            // txtSelectedCourseAssociationStudentName
+            // 
+            this.txtSelectedCourseAssociationStudentName.AutoSize = true;
+            this.txtSelectedCourseAssociationStudentName.Location = new System.Drawing.Point(92, 367);
+            this.txtSelectedCourseAssociationStudentName.Name = "txtSelectedCourseAssociationStudentName";
+            this.txtSelectedCourseAssociationStudentName.Size = new System.Drawing.Size(0, 15);
+            this.txtSelectedCourseAssociationStudentName.TabIndex = 8;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 367);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(86, 15);
+            this.label20.TabIndex = 7;
+            this.label20.Text = "Student Name:";
+            // 
+            // dgvAssociation
+            // 
+            this.dgvAssociation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAssociation.Location = new System.Drawing.Point(6, 6);
+            this.dgvAssociation.MultiSelect = false;
+            this.dgvAssociation.Name = "dgvAssociation";
+            this.dgvAssociation.ReadOnly = true;
+            this.dgvAssociation.RowTemplate.Height = 25;
+            this.dgvAssociation.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvAssociation.Size = new System.Drawing.Size(468, 333);
+            this.dgvAssociation.TabIndex = 0;
+            this.dgvAssociation.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAssociation_CellClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
-            this.ClientSize = new System.Drawing.Size(515, 433);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(507, 433);
+            this.Controls.Add(this.tbViewAssociations);
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "Form1";
             this.Text = "School Database";
@@ -828,10 +915,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.numAge)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTeacherId)).EndInit();
-            this.tabControl1.ResumeLayout(false);
+            this.tbViewAssociations.ResumeLayout(false);
             this.tbStudentCourses.ResumeLayout(false);
             this.tbStudentCourses.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCourseAssignments)).EndInit();
+            this.tbAssociationViews.ResumeLayout(false);
+            this.tbAssociationViews.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAssociation)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -887,7 +977,7 @@
         private Button btnAddTeacher;
         private Button btnLoadTeachers;
         private NumericUpDown numTeacherId;
-        private TabControl tabControl1;
+        private TabControl tbViewAssociations;
         private DateTimePicker dtStudentDateOfBirth;
         private Label label14;
         private NumericUpDown numAge;
@@ -901,5 +991,12 @@
         private Label txtSelectedCourseName;
         private Label label17;
         private Button btnClearStudentList;
+        private TabPage tbAssociationViews;
+        private DataGridView dgvAssociation;
+        private Button btnAssociatePageButton;
+        private Label txtSelectedAssociationCourseName;
+        private Label label18;
+        private Label txtSelectedCourseAssociationStudentName;
+        private Label label20;
     }
 }

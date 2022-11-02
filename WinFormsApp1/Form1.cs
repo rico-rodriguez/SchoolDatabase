@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolOfFineArtsDB;
 using SchoolOfFineArtsModels;
+using SchoolOfFineArtsModels.DTOs;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
@@ -330,6 +331,8 @@ namespace SchoolOfFineArts
 			txtSelectedCourseName.Text = string.Empty;
 			numAge.Value = 0;
 			numTeacherId.Value = 0;
+			txtSelectedCourseAssociationStudentName.Text = string.Empty;
+			txtSelectedAssociationCourseName.Text = string.Empty;
 
 			dgvCourses.ClearSelection();
 			dgvCourseAssignments.ClearSelection();
@@ -349,6 +352,7 @@ namespace SchoolOfFineArts
 			LoadTeachers();
 			LoadStudents();
 			LoadCourses();
+			LoadCourseInfoDTOs();
 			ResetForm();
 		}
 
@@ -682,6 +686,11 @@ namespace SchoolOfFineArts
 					break;
 				case 3:
 					ResetForm();
+					btnAssociate.Enabled = false;
+					break;
+				case 4:
+					LoadCourseInfoDTOs();
+					btnAssociatePageButton.Enabled = false;
 					break;
 			}
 		}
@@ -865,6 +874,126 @@ namespace SchoolOfFineArts
 			}
 
 			return sb;
+		}
+
+
+		public void LoadCourseInfoDTOs()
+		{
+			using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
+			var dbCourseInfoDtos = new BindingList<CourseInfoDTO>(context.CourseInfoDtos
+															.FromSqlRaw("Select * FROM dbo.vwCourseInfo" +
+																		" ORDER BY StudentName, CourseName")
+															.ToList());
+			dgvAssociation.DataSource = dbCourseInfoDtos;
+			dgvAssociation.Refresh();
+
+		}
+
+		private void dgvAssociation_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			try
+			{
+				if (e.RowIndex < 0)
+				{
+					ResetForm();
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+				return;
+			}
+
+			var theRow = dgvAssociation.Rows[e.RowIndex];
+			foreach (DataGridViewTextBoxCell cell in theRow.Cells)
+				if (cell.OwningColumn.Name.Equals("CourseId", StringComparison.OrdinalIgnoreCase))
+				{
+					var dataId = (int)cell.Value;
+					if (dataId == 0)
+					{
+						return;
+					}
+
+					btnAssociatePageButton.Enabled = true;
+					btnAssociatePageButton.BackColor = Color.Transparent;
+					txtSelectedCourseAssociationStudentName.Text = theRow.Cells["StudentName"].Value.ToString();
+					txtSelectedAssociationCourseName.Text = theRow.Cells["CourseName"].Value.ToString();
+				}
+		}
+
+		private void btnAssociatePageButton_Click(object sender, EventArgs e)
+		{
+			btnAssociatePageButton.Enabled = false;
+			var studentName = txtSelectedCourseAssociationStudentName.Text;
+			var courseName = txtSelectedAssociationCourseName.Text;
+			var courseId = 0;
+			var studentId = 0;
+			try
+			{
+				courseId = Convert.ToInt32(dgvAssociation.SelectedRows[0].Cells["CourseId"].Value);
+				studentId = Convert.ToInt32(dgvAssociation.SelectedRows[0].Cells["StudentId"].Value);
+			}
+			catch (Exception ex)
+			{
+				SendMessageBox("Please ensure all fields are filled out properly", "Error");
+				Debug.WriteLine(ex.Message);
+				return;
+			}
+			var confirmDisassociate = SendYesNoMessageBox($"Are you sure you want to remove {courseName} from {studentName}?", "Confirm");
+			if (confirmDisassociate == DialogResult.No)
+			{
+				var confirmReset = SendYesNoMessageBox("Do you want to reset your form?", "Confirm Reset");
+				if (confirmReset == DialogResult.Yes)
+				{
+					ResetForm();
+					return;
+				}
+
+				btnAssociate.Enabled = false;
+				return;
+			}
+			var success = RemoveStudentsFromCourseAssociation(courseId, studentId, studentName, courseName);
+			if (!success) return;
+			ResetForm();
+			LoadCourseInfoDTOs();
+		}
+
+		private bool RemoveStudentsFromCourseAssociation(int courseId, int studentId, string studentName, string courseName)
+		{
+			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+			{
+				CourseEnrollment? courseEnrollment = FindCourseInSelectedStudent(courseId, studentId, context);
+				if (courseEnrollment == null)
+				{
+					SendMessageBox("There's an error with your selection.", "Error");
+					return false;
+				}
+				return DeleteCourseFromSelectedStudent(studentId, studentName, courseName, context, courseEnrollment);
+			}
+		}
+
+		private static CourseEnrollment? FindCourseInSelectedStudent(int courseId, int studentId, SchoolOfFineArtsDBContext context)
+		{
+			return context.Students
+				.Include(s => s.CourseEnrollments)
+				.ThenInclude(c => c.Course)
+				.FirstOrDefault(s => s.Id == studentId)?
+				.CourseEnrollments
+				.FirstOrDefault(c => c.CourseId == courseId);
+		}
+
+		private static bool DeleteCourseFromSelectedStudent(int studentId, string studentName, string courseName, SchoolOfFineArtsDBContext context, CourseEnrollment? courseEnrollment)
+		{
+			context.Students
+				.Include(s => s.CourseEnrollments)
+				.ThenInclude(c => c.Course)
+				.FirstOrDefault(s => s.Id == studentId)
+				?.CourseEnrollments
+				.Remove(courseEnrollment);
+			context.SaveChanges();
+			SendMessageBox($"{studentName} has been removed from {courseName}", "Success!");
+			return true;
 		}
 	}
 }
