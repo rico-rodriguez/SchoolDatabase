@@ -463,6 +463,7 @@
             this.button4.TabIndex = 45;
             this.button4.Text = "Refresh";
             this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.btnLoadStudents_Click);
             // 
             // btnAddStudent
             // 

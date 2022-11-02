@@ -13,6 +13,7 @@ namespace WinFormsApp1
 		//use readonly as they are only set at form creation
 		private readonly string _cnstr;
 		private readonly DbContextOptionsBuilder _optionsBuilder;
+
 		public Form1()
 		{
 			InitializeComponent();
@@ -22,18 +23,18 @@ namespace WinFormsApp1
 
 		private void btnAddTeacher_Click(object sender, EventArgs e)
 		{
-			bool modified = false;
-			var teacher = new Teacher();
-			teacher.Id = Convert.ToInt32(Math.Round(numTeacherId.Value));
-			teacher.FirstName = txtTeacherFirstName.Text;
-			teacher.LastName = txtTeacherLastName.Text;
-			teacher.Age = Convert.ToInt32(Math.Round(numAge.Value));
-
+			var modified = false;
+			var teacher = new Teacher
+			{
+				Id = Convert.ToInt32(Math.Round(numTeacherId.Value)),
+				FirstName = txtTeacherFirstName.Text,
+				LastName = txtTeacherLastName.Text,
+				Age = Convert.ToInt32(Math.Round(numAge.Value))
+			};
 
 			//Ensure teacher not in database
 
 			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
-			{
 				if (teacher.Id > 0)
 				{
 					var existingTeacher = context.Teachers.SingleOrDefault(t => t.Id == teacher.Id);
@@ -50,13 +51,13 @@ namespace WinFormsApp1
 					{
 						MessageBox.Show("Teacher not found. Could not update.");
 					}
-
 				}
 				else
 				{
-					var existingTeacher = context.Teachers.SingleOrDefault(t => t.FirstName.ToLower() == teacher.FirstName.ToLower()
-															  && t.LastName.ToLower() == teacher.LastName.ToLower()
-															  && t.Age == teacher.Age);
+					var existingTeacher = context.Teachers.SingleOrDefault(t =>
+						t.FirstName.ToLower() == teacher.FirstName.ToLower()
+						&& t.LastName.ToLower() == teacher.LastName.ToLower()
+						&& t.Age == teacher.Age);
 					if (existingTeacher == null)
 					{
 						context.Teachers.Add(teacher);
@@ -68,65 +69,66 @@ namespace WinFormsApp1
 						MessageBox.Show("Teacher already exists, did you mean to update?");
 					}
 				}
-				if (modified)
-				{
-					ResetForm();
-					LoadTeachers();
-				}
-			}
+
+			if (!modified) return;
+			ResetForm();
+			LoadTeachers();
 		}
+
 		private void btnAddStudent_Click(object sender, EventArgs e)
 		{
-			bool modified = false;
+			var modified = false;
 
-			var student = new Student();
-			student.Id = Convert.ToInt32(Math.Round(numStudentId.Value));
-			student.FirstName = txtStudentFirstName.Text;
-			student.LastName = txtStudentLastName.Text;
-			student.DateOfBirth = dtStudentDateOfBirth.Value.Date;
+			var student = new Student
+			{
+				Id = Convert.ToInt32(Math.Round(numStudentId.Value)),
+				FirstName = txtStudentFirstName.Text,
+				LastName = txtStudentLastName.Text,
+				DateOfBirth = dtStudentDateOfBirth.Value.Date
+			};
 
 			//Ensure teacher not in database
 
-			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+			using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
+			if (student.Id > 0)
 			{
-				if (student.Id > 0)
-				{
-					var existingStudent = context.Students.SingleOrDefault(t => t.Id == student.Id);
+				var existingStudent = context.Students.SingleOrDefault(t => t.Id == student.Id);
 
-					if (existingStudent is not null)
-					{
-						existingStudent.FirstName = student.FirstName;
-						existingStudent.LastName = student.LastName;
-						existingStudent.DateOfBirth = student.DateOfBirth;
-						context.SaveChanges();
-						modified = true;
-					}
-					else
-					{
-						MessageBox.Show("Teacher not found. Could not update.");
-					}
+				if (existingStudent is not null)
+				{
+					existingStudent.FirstName = student.FirstName;
+					existingStudent.LastName = student.LastName;
+					existingStudent.DateOfBirth = student.DateOfBirth;
+					context.SaveChanges();
+					modified = true;
 				}
 				else
 				{
-					var existingStudent = context.Students.SingleOrDefault(t => t.FirstName.ToLower() == student.FirstName.ToLower()
-															  && t.LastName.ToLower() == student.LastName.ToLower()
-															  && t.DateOfBirth == student.DateOfBirth);
-					if (existingStudent == null)
-					{
-						context.Students.Add(student);
-						context.SaveChanges();
-						modified = true;
-					}
-					else
-					{
-						MessageBox.Show("Teacher already exists, did you mean to update?");
-					}
+					MessageBox.Show("Teacher not found. Could not update.");
 				}
-				if (modified)
+			}
+			else
+			{
+				var existingStudent = context.Students.SingleOrDefault(t =>
+					t.FirstName.ToLower() == student.FirstName.ToLower()
+					&& t.LastName.ToLower() == student.LastName.ToLower()
+					&& t.DateOfBirth == student.DateOfBirth);
+				if (existingStudent == null)
 				{
-					ResetForm();
-					LoadStudents();
+					context.Students.Add(student);
+					context.SaveChanges();
+					modified = true;
 				}
+				else
+				{
+					MessageBox.Show("Teacher already exists, did you mean to update?");
+				}
+			}
+
+			if (modified)
+			{
+				ResetForm();
+				LoadStudents();
 			}
 		}
 
@@ -142,17 +144,15 @@ namespace WinFormsApp1
 				var dbTeachers = new BindingList<Teacher>(context.Teachers.ToList());
 				dgvResults.DataSource = dbTeachers;
 				dgvResults.Refresh();
+			}
 
-			}
-			if (!isSearch)
-			{
-				cboInstructor.SelectedIndex = -1;
-				cboInstructor.Items.Clear();
-				var data = dgvResults.DataSource as BindingList<Teacher>;
-				cboInstructor.Items.AddRange(data.ToArray());
-				cboInstructor.DisplayMember = "FullName";
-				cboInstructor.ValueMember = "Id";
-			}
+			if (isSearch) return;
+			cboInstructor.SelectedIndex = -1;
+			cboInstructor.Items.Clear();
+			var data = dgvResults.DataSource as BindingList<Teacher>;
+			cboInstructor.Items.AddRange(data!.ToArray());
+			cboInstructor.DisplayMember = "FullName";
+			cboInstructor.ValueMember = "Id";
 		}
 
 		private void btnLoadStudents_Click(object sender, EventArgs e)
@@ -162,15 +162,13 @@ namespace WinFormsApp1
 
 		private void LoadStudents()
 		{
-			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
-			{
-				var dbStudents = new BindingList<Student>(context.Students.ToList());
-				dgvResultsStudents.DataSource = dbStudents;
-				dgvResultsStudents.Refresh();
+			using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
+			var dbStudents = new BindingList<Student>(context.Students.ToList());
+			dgvResultsStudents.DataSource = dbStudents;
+			dgvResultsStudents.Refresh();
 
-				lstStudents.Items.Clear();
-				lstStudents.Items.AddRange(dbStudents.ToArray());
-			}
+			lstStudents.Items.Clear();
+			lstStudents.Items.AddRange(dbStudents.ToArray());
 		}
 
 
@@ -188,36 +186,29 @@ namespace WinFormsApp1
 			{
 				MessageBox.Show(ex.Message);
 			}
+
 			var theRow = dgvResults.Rows[e.RowIndex];
-			int dataId = 0;
+			var dataId = 0;
 
 			foreach (DataGridViewTextBoxCell cell in theRow.Cells)
-			{
-
 				if (cell.OwningColumn.Name.Equals("Id", StringComparison.OrdinalIgnoreCase))
 				{
 					dataId = (int)cell.Value;
-					if (dataId == 0)
-					{
-						MessageBox.Show("Bad row clicked");
-						ResetForm();
-						return;
-					}
+					if (dataId != 0) continue;
+					MessageBox.Show("Bad row clicked");
+					ResetForm();
+					return;
 				}
-			}
-			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
-			{
-				var d = context.Teachers.SingleOrDefault(x => x.Id == dataId);
-				if (d is not null)
-				{
-					numTeacherId.Value = d.Id;
-					txtTeacherFirstName.Text = d.FirstName;
-					txtTeacherLastName.Text = d.LastName;
-					numAge.Value = d.Age;
-				}
-			}
 
+			using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
+			var d = context.Teachers.SingleOrDefault(x => x.Id == dataId);
+			if (d is null) return;
+			numTeacherId.Value = d.Id;
+			txtTeacherFirstName.Text = d.FirstName;
+			txtTeacherLastName.Text = d.LastName;
+			numAge.Value = d.Age;
 		}
+
 		private void dgvResultsStudents_CellClick(object sender, DataGridViewCellEventArgs e)
 		{
 			try
@@ -232,33 +223,27 @@ namespace WinFormsApp1
 			{
 				MessageBox.Show(ex.Message);
 			}
+
 			var theRow = dgvResultsStudents.Rows[e.RowIndex];
-			int dataId = 0;
+			var dataId = 0;
 
 			foreach (DataGridViewTextBoxCell cell in theRow.Cells)
-			{
 				if (cell.OwningColumn.Name.Equals("Id", StringComparison.OrdinalIgnoreCase))
 				{
 					dataId = (int)cell.Value;
-					if (dataId == 0)
-					{
-						MessageBox.Show("Bad row clicked");
-						ResetForm();
-						return;
-					}
+					if (dataId != 0) continue;
+					MessageBox.Show("Bad row clicked");
+					ResetForm();
+					return;
 				}
-			}
-			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
-			{
-				var d = context.Students.SingleOrDefault(x => x.Id == dataId);
-				if (d is not null)
-				{
-					numStudentId.Value = d.Id;
-					txtStudentFirstName.Text = d.FirstName;
-					txtStudentLastName.Text = d.LastName;
-					dtStudentDateOfBirth.Value = d.DateOfBirth;
-				}
-			}
+
+			using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
+			var d = context.Students.SingleOrDefault(x => x.Id == dataId);
+			if (d is null) return;
+			numStudentId.Value = d.Id;
+			txtStudentFirstName.Text = d.FirstName;
+			txtStudentLastName.Text = d.LastName;
+			dtStudentDateOfBirth.Value = d.DateOfBirth;
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
@@ -267,23 +252,18 @@ namespace WinFormsApp1
 			var confirmDelete = MessageBox.Show("Are you sure you want to delete this item?"
 				, "Are you sure?"
 				, MessageBoxButtons.YesNo);
-			if (confirmDelete == DialogResult.No)
+			if (confirmDelete == DialogResult.No) return;
+			using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
+			var d = context.Teachers.SingleOrDefault(t => t.Id == Id);
+			if (d != null)
 			{
-				return;
+				context.Teachers.Remove(d);
+				context.SaveChanges();
+				LoadTeachers();
 			}
-			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+			else
 			{
-				var d = context.Teachers.SingleOrDefault(t => t.Id == Id);
-				if (d != null)
-				{
-					context.Teachers.Remove(d);
-					context.SaveChanges();
-					LoadTeachers();
-				}
-				else
-				{
-					MessageBox.Show("Student not found, couldnt delete.");
-				}
+				MessageBox.Show("Student not found, couldn't delete.");
 			}
 		}
 		private void btnStudentDelete_Click(object sender, EventArgs e)
@@ -477,23 +457,20 @@ namespace WinFormsApp1
 			}
 			else
 			{
-				using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
+				using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
+				var existingCourse = context.Courses.SingleOrDefault(c => c.Name.ToLower() == newCourse.Name.ToLower()
+																		  && c.Abbreviation.ToLower() == newCourse.Abbreviation.ToLower()
+																		  && c.TeacherId == newCourse.TeacherId);
+				if (existingCourse == null)
 				{
-					var existingCourse = context.Courses.SingleOrDefault(c => c.Name.ToLower() == newCourse.Name.ToLower()
-														  && c.Abbreviation.ToLower() == newCourse.Abbreviation.ToLower()
-														  && c.TeacherId == newCourse.TeacherId);
-					if (existingCourse == null)
-					{
-						context.Courses.Add(newCourse);
-						context.SaveChanges();
-						modified = true;
-					}
-					else
-					{
-						MessageBox.Show("Course already exists, did you mean to update?");
-					}
+					context.Courses.Add(newCourse);
+					context.SaveChanges();
+					modified = true;
 				}
-
+				else
+				{
+					MessageBox.Show("Course already exists, did you mean to update?");
+				}
 			}
 			if (modified)
 			{
@@ -501,63 +478,48 @@ namespace WinFormsApp1
 				LoadCourses();
 			}
 		}
-
-		private void cboInstructor_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			//Get selected teacher
-			var selectedTeacher = (Teacher)cboInstructor.SelectedItem;
-
-			//Get teacher's courses
-			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
-			{
-			}
-		}
-
 		public void LoadCourses(bool isSearch = false)
 		{
-			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
-			{
-				var dbCourses = new BindingList<Course>(context.Courses.Include(x => x.Teacher).ToList());
+			using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
+			var dbCourses = new BindingList<Course>(context.Courses.Include(x => x.Teacher).ToList());
 
-				//var courses = from c in context.Courses
-				//			  join t in context.Teachers on c.TeacherId equals t.Id
-				//			  select new { c.Id, c.Name, c.Abbreviation, c.Department, c.NumCredits, Instructor = t.FullName };
+			//var courses = from c in context.Courses
+			//			  join t in context.Teachers on c.TeacherId equals t.Id
+			//			  select new { c.Id, c.Name, c.Abbreviation, c.Department, c.NumCredits, Instructor = t.FullName };
 
 
-				//var otherCourses = context.Courses.Include(x => x.Teacher)
-				//						.Select(y => new
-				//						{
-				//							Name = y.Name,
-				//							Abbreviation = y.Abbreviation,
-				//							//Department = y.Department,
-				//							//NumCredits = y.NumCredits,
-				//							TeacherID = y.TeacherId,
-				//							TeacherName = y.Teacher.FullName
-				//						});
-				var otherCourses = context.Courses.Include(x => x.Teacher)
-										.Select(y => new
-										{
-											Id = y.Id,
-											CourseName = y.Name,
-											Abbreviation = y.Abbreviation,
-											//Department = y.Department,
-											Credits = y.NumCredits,
-											TeacherID = y.TeacherId,
-											TeacherName = y.Teacher.FullName
-										});
+			//var otherCourses = context.Courses.Include(x => x.Teacher)
+			//						.Select(y => new
+			//						{
+			//							Name = y.Name,
+			//							Abbreviation = y.Abbreviation,
+			//							//Department = y.Department,
+			//							//NumCredits = y.NumCredits,
+			//							TeacherID = y.TeacherId,
+			//							TeacherName = y.Teacher.FullName
+			//						});
+			var otherCourses = context.Courses.Include(x => x.Teacher)
+				.Select(y => new
+				{
+					Id = y.Id,
+					CourseName = y.Name,
+					Abbreviation = y.Abbreviation,
+					//Department = y.Department,
+					Credits = y.NumCredits,
+					TeacherID = y.TeacherId,
+					TeacherName = y.Teacher.FullName
+				});
 
-				//dgvCourses.DataSource = otherCourses;
-				dgvCourses.DataSource = dbCourses.ToList();
-				dgvCourses.Refresh();
-				dgvCourseAssignments.DataSource = otherCourses.ToList();
-				dgvCourseAssignments.Refresh();
-				dgvCourseAssignments.Columns["TeacherId"].Visible = false;
-				dgvCourseAssignments.Columns["Abbreviation"].Visible = false;
-				dgvCourseAssignments.Columns["Credits"].Width = 50;
-				dgvCourseAssignments.Columns["Id"].Width = 20;
-				dgvCourseAssignments.Columns["TeacherName"].Width = 129;
-
-			}
+			//dgvCourses.DataSource = otherCourses;
+			dgvCourses.DataSource = dbCourses.ToList();
+			dgvCourses.Refresh();
+			dgvCourseAssignments.DataSource = otherCourses.ToList();
+			dgvCourseAssignments.Refresh();
+			dgvCourseAssignments.Columns["TeacherId"]!.Visible = false;
+			dgvCourseAssignments.Columns["Abbreviation"]!.Visible = false;
+			dgvCourseAssignments.Columns["Credits"]!.Width = 50;
+			dgvCourseAssignments.Columns["Id"]!.Width = 20;
+			dgvCourseAssignments.Columns["TeacherName"]!.Width = 129;
 		}
 
 		private void btnShowCourses_Click(object sender, EventArgs e)
@@ -643,14 +605,11 @@ namespace WinFormsApp1
 			var confirmDelete = MessageBox.Show($"Are you sure you want to delete [{name}]?"
 				, "Are you sure?"
 				, MessageBoxButtons.YesNo);
-			if (confirmDelete == DialogResult.No)
-			{
-				return;
-			}
+			if (confirmDelete == DialogResult.No) return;
 			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
 			{
 				//Remove selected course from database
-				var d = context.Courses.SingleOrDefault(t => Convert.ToInt32(t.Id.ToString()) == Convert.ToInt32(Id.ToString()));
+				var d = context.Courses.SingleOrDefault(t => Convert.ToInt32(t.Id.ToString()) == Convert.ToInt32(Id));
 				if (d != null)
 				{
 					context.Courses.Remove(d);
@@ -659,8 +618,9 @@ namespace WinFormsApp1
 				}
 				else
 				{
-					MessageBox.Show("Student not found, couldnt delete.");
+					MessageBox.Show("Student not found, couldn't delete.");
 				}
+
 				dgvCourses.Refresh();
 				ResetForm();
 			}
@@ -668,7 +628,6 @@ namespace WinFormsApp1
 
 		private void cbSortCourses_SelectedIndexChanged(object sender, EventArgs e)
 		{
-
 			//Sort courses by selected criteria
 			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
 			{
@@ -692,11 +651,11 @@ namespace WinFormsApp1
 						dbCourses = new BindingList<Course>(dbCourses.OrderBy(x => x.Teacher.LastName).ToList());
 						break;
 					case 5:
-						dbCourses = new BindingList<Course>(dbCourses.OrderByDescending(x => x.Teacher.LastName).ToList());
-						break;
-					default:
+						dbCourses = new BindingList<Course>(dbCourses.OrderByDescending(x => x.Teacher.LastName)
+							.ToList());
 						break;
 				}
+
 				dgvCourses.DataSource = dbCourses;
 				dgvCourses.Refresh();
 			}
@@ -720,8 +679,6 @@ namespace WinFormsApp1
 					LoadCourses();
 					ResetForm();
 					break;
-				default:
-					break;
 			}
 		}
 
@@ -741,11 +698,9 @@ namespace WinFormsApp1
 			}
 
 			var theRow = dgvCourseAssignments.Rows[e.RowIndex];
-			int dataId = 0;
+			var dataId = 0;
 
 			foreach (DataGridViewTextBoxCell cell in theRow.Cells)
-			{
-
 				if (cell.OwningColumn.Name.Equals("Id", StringComparison.OrdinalIgnoreCase))
 				{
 					dataId = (int)cell.Value;
@@ -754,13 +709,13 @@ namespace WinFormsApp1
 						MessageBox.Show("Bad row clicked");
 						return;
 					}
+
 					btnAssociate.Enabled = true;
 					btnAssociate.BackColor = Color.Transparent;
 					btnAssociate.Cursor = DefaultCursor;
 					txtSelectedCourseId.Text = dataId.ToString();
 					txtSelectedCourseName.Text = theRow.Cells["CourseName"].Value.ToString();
 				}
-			}
 		}
 
 		private void btnClearStudentList_Click(object sender, EventArgs e)
@@ -772,10 +727,7 @@ namespace WinFormsApp1
 		{
 			lstStudents.ClearSelected();
 			//uncheck all boxes in the list
-			foreach (int i in lstStudents.CheckedIndices)
-			{
-				lstStudents.SetItemChecked(i, false);
-			}
+			foreach (int i in lstStudents.CheckedIndices) lstStudents.SetItemChecked(i, false);
 		}
 
 		private void btnAssociate_Click(object sender, EventArgs e)
@@ -788,56 +740,63 @@ namespace WinFormsApp1
 			}
 			catch (Exception ex)
 			{
-				SendMessageBox("Please ensure all fields are filled out properly", "Error");
+				SendMessageBox("Please ensure all fields are filled out properly",
+					"Error");
 				Debug.WriteLine(ex.Message);
 				return;
 			}
+
 			var courseName = txtSelectedCourseName.Text;
 			if (lstStudents.CheckedItems.Count == 0)
 			{
-				SendMessageBox("Please select a student to associate with a course. Select a student", "Select a student");
+				SendMessageBox("Please select a student to associate with a course.",
+					"Select a student");
 				return;
 			}
+
 			if (string.IsNullOrEmpty(txtSelectedCourseId.Text) || courseId < 1)
 			{
-				SendMessageBox("Please select a course to associate with a student.", "Select a course");
+				SendMessageBox("Please select a course to associate with a student.",
+					"Select a course");
 				return;
 			}
 
 			var students = lstStudents.CheckedItems.Cast<Student>().ToList();
-			StringBuilder sb = StringOfNames(students);
-			var confirmAssociate = SendYesNoMessageBox($"Are you sure you want to associate {sb} to {courseName}?", "Confirm");
+			var sb = StringOfNames(students);
+			var confirmAssociate =
+				SendYesNoMessageBox($"Are you sure you want to associate {sb} to {courseName}?",
+					"Confirm");
 			if (confirmAssociate == DialogResult.No)
 			{
-				DialogResult confirmReset = SendYesNoMessageBox("Do you want to reset your form ?", "Confirm Reset");
+				var confirmReset = SendYesNoMessageBox("Do you want to reset your form ?",
+					"Confirm Reset");
 				if (confirmReset == DialogResult.Yes)
 				{
 					ResetForm();
 					ResetStudentListForm();
 				}
+
 				btnAssociate.Enabled = false;
 				return;
-
 			}
-			bool success = AddStudentsToCourseAssociation(students, courseId, courseName);
 
-			if (success)
-			{
-				ResetForm();
-				ResetStudentListForm();
-			}
+			var success = AddStudentsToCourseAssociation(students, courseId, courseName);
+
+			if (!success) return;
+			ResetForm();
+			ResetStudentListForm();
 		}
 
 		private static DialogResult SendYesNoMessageBox(string message, string caption)
 		{
 			return MessageBox.Show(message, caption,
-													MessageBoxButtons.YesNo,
-													MessageBoxIcon.Question);
+				MessageBoxButtons.YesNo,
+				MessageBoxIcon.Question);
 		}
 
 		private static void SendMessageBox(string message, string caption)
 		{
-			var buttonType = MessageBoxButtons.OK;
+			const MessageBoxButtons buttonType = MessageBoxButtons.OK;
 			var iconType = MessageBoxIcon.Information;
 
 			MessageBox.Show($"{message}", $"{caption}", buttonType, iconType);
@@ -847,28 +806,29 @@ namespace WinFormsApp1
 		{
 			using (var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options))
 			{
-				bool modified = false;
-				var existingCourse = context.Courses.Include(x => x.CourseEnrollments).SingleOrDefault(t => t.Id == courseId);
+				var modified = false;
+				var existingCourse = context.Courses.Include(x => x.CourseEnrollments)
+					.SingleOrDefault(t => t.Id == courseId);
 				if (existingCourse is null)
 				{
 					SendMessageBox($"{existingCourse.Name} does not exist.", "Error");
 					return false;
 				}
+
 				foreach (var student in students)
 				{
-					var existingStudent = context.Students.Include(x => x.CourseEnrollments).SingleOrDefault(s => s.Id == student.Id);
+					var existingStudent = context.Students.Include(x => x.CourseEnrollments)
+						.SingleOrDefault(s => s.Id == student.Id);
 					if (existingStudent is null)
 					{
 						SendMessageBox($"{existingStudent} not found. Could not update.", "Error");
 						continue;
 					}
+
 					var courseExists = false;
 					foreach (var enrollment in existingStudent.CourseEnrollments)
 					{
-						if (enrollment.Course is null)
-						{
-							break;
-						}
+						if (enrollment.Course is null) break;
 						if (enrollment.Course.Id == existingCourse.Id)
 						{
 							SendMessageBox($"{student.FullName} is already enrolled in {courseName}", "Error");
@@ -876,22 +836,22 @@ namespace WinFormsApp1
 							break;
 						}
 					}
-					if (courseExists)
-					{
-						continue;
-					}
-					CourseEnrollment courseEnrollment = new CourseEnrollment();
+
+					if (courseExists) continue;
+					var courseEnrollment = new CourseEnrollment();
 					courseEnrollment.CourseId = courseId;
 					courseEnrollment.StudentId = student.Id;
 					existingStudent.CourseEnrollments.Add(courseEnrollment);
 					modified = true;
 				}
+
 				if (modified)
 				{
 					SendMessageBox("Students have been enrolled.", "Success");
 					context.SaveChanges();
 				}
 			}
+
 			return true;
 		}
 
