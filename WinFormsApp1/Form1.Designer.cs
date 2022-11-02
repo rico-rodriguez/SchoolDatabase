@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp1
+﻿namespace SchoolOfFineArts
 {
     partial class Form1
     {
@@ -306,7 +306,6 @@
             this.cboInstructor.Name = "cboInstructor";
             this.cboInstructor.Size = new System.Drawing.Size(245, 23);
             this.cboInstructor.TabIndex = 14;
-            this.cboInstructor.SelectedIndexChanged += new System.EventHandler(this.cboInstructor_SelectedIndexChanged);
             // 
             // Students
             // 

@@ -2,11 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using SchoolOfFineArtsDB;
 using SchoolOfFineArtsModels;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Text;
 
-namespace WinFormsApp1
+namespace SchoolOfFineArts
 {
 	public partial class Form1 : Form
 	{
@@ -257,6 +256,7 @@ namespace WinFormsApp1
 			{
 				context.Teachers.Remove(d);
 				context.SaveChanges();
+				ResetForm();
 				LoadTeachers();
 			}
 			else
@@ -279,6 +279,7 @@ namespace WinFormsApp1
 				{
 					context.Students.Remove(d);
 					context.SaveChanges();
+					ResetForm();
 					LoadStudents();
 				}
 				else
@@ -484,14 +485,16 @@ namespace WinFormsApp1
 				.Select(y => new
 				{
 					CourseName = y.Name,
+					Abbreviation = y.Abbreviation,
+					ID = y.Id,
 					Credits = y.NumCredits,
 					TeacherID = y.TeacherId,
 					TeacherName = y.Teacher.FullName
 				});
 
-			//dgvCourses.DataSource = otherCourses;
 			dgvCourses.DataSource = dbCourses.ToList();
 			dgvCourses.Refresh();
+
 			dgvCourseAssignments.DataSource = otherCourses.ToList();
 			dgvCourseAssignments.Refresh();
 			dgvCourseAssignments.Columns["TeacherId"]!.Visible = false;
@@ -675,12 +678,10 @@ namespace WinFormsApp1
 			}
 
 			var theRow = dgvCourseAssignments.Rows[e.RowIndex];
-			var dataId = 0;
-
 			foreach (DataGridViewTextBoxCell cell in theRow.Cells)
 				if (cell.OwningColumn.Name.Equals("Id", StringComparison.OrdinalIgnoreCase))
 				{
-					dataId = (int)cell.Value;
+					var dataId = (int)cell.Value;
 					if (dataId == 0)
 					{
 						SendMessageBox("Bad row clicked", "Error");
@@ -784,7 +785,7 @@ namespace WinFormsApp1
 					.SingleOrDefault(t => t.Id == courseId);
 				if (existingCourse is null)
 				{
-					SendMessageBox($"{existingCourse.Name} does not exist.", "Error");
+					SendMessageBox($"{existingCourse!.Name} does not exist.", "Error");
 					return false;
 				}
 

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace WinFormsApp1
+namespace SchoolOfFineArts
 {
     public static class Program
     {
@@ -21,6 +21,6 @@ namespace WinFormsApp1
             _configuration = builder.Build();
             Application.Run(new Form1());
         }
-        
+
     }
 }

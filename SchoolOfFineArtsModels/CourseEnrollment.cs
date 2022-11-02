@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolOfFineArtsModels
 {
+    [Index(nameof(StudentId), nameof(CourseId), IsUnique = true)]
     public class CourseEnrollment
     {
         [Key]
