@@ -287,7 +287,7 @@ namespace WinFormsApp1
 				}
 				else
 				{
-					MessageBox.Show("Student not found, couldnt delete.");
+					MessageBox.Show("Student not found, couldn't delete.");
 				}
 
 				dgvResultsStudents.Refresh();
@@ -424,13 +424,15 @@ namespace WinFormsApp1
 			bool modified = false;
 
 			//Get course info and store in temp variable
-			var newCourse = new Course();
-			newCourse.Id = Convert.ToInt32(lblCourseId.Text);
-			newCourse.Abbreviation = txtAbbreviation.Text;
-			newCourse.Department = txtDepartment.Text;
-			newCourse.Name = txtCourseName.Text;
-			newCourse.NumCredits = Convert.ToInt32(cboCredits.SelectedItem);
-			newCourse.TeacherId = ((Teacher)cboInstructor.SelectedItem).Id;
+			var newCourse = new Course
+			{
+				Id = Convert.ToInt32(lblCourseId.Text),
+				Abbreviation = txtAbbreviation.Text,
+				Department = txtDepartment.Text,
+				Name = txtCourseName.Text,
+				NumCredits = Convert.ToInt32(cboCredits.SelectedItem),
+				TeacherId = ((Teacher)cboInstructor.SelectedItem).Id
+			};
 
 			//Ensure teacher not in database
 			if (newCourse.Id > 0)
@@ -482,29 +484,10 @@ namespace WinFormsApp1
 		{
 			using var context = new SchoolOfFineArtsDBContext(_optionsBuilder.Options);
 			var dbCourses = new BindingList<Course>(context.Courses.Include(x => x.Teacher).ToList());
-
-			//var courses = from c in context.Courses
-			//			  join t in context.Teachers on c.TeacherId equals t.Id
-			//			  select new { c.Id, c.Name, c.Abbreviation, c.Department, c.NumCredits, Instructor = t.FullName };
-
-
-			//var otherCourses = context.Courses.Include(x => x.Teacher)
-			//						.Select(y => new
-			//						{
-			//							Name = y.Name,
-			//							Abbreviation = y.Abbreviation,
-			//							//Department = y.Department,
-			//							//NumCredits = y.NumCredits,
-			//							TeacherID = y.TeacherId,
-			//							TeacherName = y.Teacher.FullName
-			//						});
 			var otherCourses = context.Courses.Include(x => x.Teacher)
 				.Select(y => new
 				{
-					Id = y.Id,
 					CourseName = y.Name,
-					Abbreviation = y.Abbreviation,
-					//Department = y.Department,
 					Credits = y.NumCredits,
 					TeacherID = y.TeacherId,
 					TeacherName = y.Teacher.FullName
@@ -560,7 +543,7 @@ namespace WinFormsApp1
 					dataId = (int)cell.Value;
 					if (dataId == 0)
 					{
-						MessageBox.Show("Bad row clicked");
+						SendMessageBox("Bad row clicked", "Error");
 						ResetForm();
 						return;
 					}
@@ -618,7 +601,7 @@ namespace WinFormsApp1
 				}
 				else
 				{
-					MessageBox.Show("Student not found, couldn't delete.");
+					SendMessageBox("Student not found, couldn't delete.", "Error");
 				}
 
 				dgvCourses.Refresh();
